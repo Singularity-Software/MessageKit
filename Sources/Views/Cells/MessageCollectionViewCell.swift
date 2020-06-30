@@ -41,5 +41,9 @@ open class MessageCollectionViewCell: UICollectionViewCell {
     open func handleTapGesture(_ gesture: UIGestureRecognizer) {
         // Should be overridden
     }
-
+    
+    /// Handle pan gesture on contentView and its subviews.
+    @objc open func handlePanGesture(_ gesture: UIPanGestureRecognizer) {
+        // Should be overridden
+    }
 }

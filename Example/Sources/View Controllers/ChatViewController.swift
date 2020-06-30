@@ -187,6 +187,14 @@ class ChatViewController: MessagesViewController, MessagesDataSource {
 
 extension ChatViewController: MessageCellDelegate {
     
+	func didSwipeLeft(in cell: MessageCollectionViewCell) {
+		print("Swiped Left")
+	}
+	
+	func didSwipeRight(in cell: MessageCollectionViewCell) {
+		print("Swiped Right")
+	}
+	
     func didTapAvatar(in cell: MessageCollectionViewCell) {
         print("Avatar tapped")
     }

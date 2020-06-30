@@ -158,10 +158,33 @@ public protocol MessageCellDelegate: MessageLabelDelegate {
     /// `indexPath(for: cell)` method. Then using the returned `IndexPath` with the `MessagesDataSource`
     /// method `messageForItem(at:indexPath:messagesCollectionView)`.
     func didStopAudio(in cell: AudioMessageCell)
-
+	
+	/// Triggered when a swipe right on the message is more than 50% of the screen width
+	///
+	/// - Parameters:
+	///   - cell: The cell where the swipe occurred.
+	///
+	/// You can get a reference to the `MessageType` for the cell by using `UICollectionView`'s
+	/// `indexPath(for: cell)` method. Then using the returned `IndexPath` with the `MessagesDataSource`
+	/// method `messageForItem(at:indexPath:messagesCollectionView)`.
+	func didSwipeRight(in cell: MessageCollectionViewCell)
+	
+	/// Triggered when a swipe left on the message is more than 50% of the screen width
+	///
+	/// - Parameters:
+	///   - cell: The cell where the swipe occurred.
+	///
+	/// You can get a reference to the `MessageType` for the cell by using `UICollectionView`'s
+	/// `indexPath(for: cell)` method. Then using the returned `IndexPath` with the `MessagesDataSource`
+	/// method `messageForItem(at:indexPath:messagesCollectionView)`.
+	func didSwipeLeft(in cell: MessageCollectionViewCell)
 }
 
 public extension MessageCellDelegate {
+
+	func didSwipeRight(in cell: MessageCollectionViewCell) {}
+
+	func didSwipeLeft(in cell: MessageCollectionViewCell) {}
 
     func didTapBackground(in cell: MessageCollectionViewCell) {}
 
