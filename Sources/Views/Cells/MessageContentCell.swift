@@ -78,6 +78,8 @@ open class MessageContentCell: MessageCollectionViewCell {
 	
 	open var triggeredHaptic = false
 	
+	open var initialXOrigin: CGFloat = 0
+	
 	// Should only add customized subviews - don't change accessoryView itself.
 	open var accessoryView: UIView = UIView()
 	
@@ -202,6 +204,10 @@ open class MessageContentCell: MessageCollectionViewCell {
 		
 		guard let gestureView = gesture.view else { return }
 		
+		if initialXOrigin == 0 {
+			initialXOrigin = gestureView.frame.origin.x
+		}
+		
 		gestureView.center = .init(x: gestureView.center.x + translation.x,
 								   y: gestureView.center.y )
 		
@@ -226,13 +232,14 @@ open class MessageContentCell: MessageCollectionViewCell {
 					   options: .curveEaseOut,
 					   animations:
 			{
-				gestureView.frame = .init(0,
+				gestureView.frame = .init(self.initialXOrigin,
 										 gestureView.frame.origin.y,
 										 gestureView.frame.size.width,
 										 gestureView.frame.size.height)
 		}, completion: { _ in
 			self.triggeredHaptic = false
-
+			self.initialXOrigin = 0
+			
 			if x > gestureView.frame.size.width * 0.3 {
 				self.delegate?.didSwipeRight(in: self)
 			} else if x < -gestureView.frame.size.width / 2 {
