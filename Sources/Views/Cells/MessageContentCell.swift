@@ -72,7 +72,7 @@ open class MessageContentCell: MessageCollectionViewCell {
 	open lazy var hapticGenerator: UINotificationFeedbackGenerator = {
 		let notificationFeedbackGenerator = UINotificationFeedbackGenerator()
 		notificationFeedbackGenerator.prepare()
-
+		
 		return notificationFeedbackGenerator
 	}()
 	
@@ -202,19 +202,17 @@ open class MessageContentCell: MessageCollectionViewCell {
 	@objc open override func handlePanGesture(_ gesture: UIPanGestureRecognizer) {
 		let translation = gesture.translation(in: self)
 		
-		guard let gestureView = gesture.view else { return }
-		
 		if initialXOrigin == 0 {
-			initialXOrigin = gestureView.frame.origin.x
+			initialXOrigin = self.frame.origin.x
 		}
 		
-		gestureView.center = .init(x: gestureView.center.x + translation.x,
-								   y: gestureView.center.y )
+		self.center = .init(x: self.center.x + translation.x,
+							y: self.center.y )
 		
 		gesture.setTranslation(.zero, in: self)
-		let x = gestureView.frame.origin.x
-
-		if x > gestureView.frame.size.width * 0.3 {
+		let x = self.frame.origin.x
+		
+		if x > self.frame.size.width * 0.25 {
 			if triggeredHaptic == false {
 				if #available(iOS 10.0, *) {
 					triggeredHaptic = true
@@ -226,23 +224,23 @@ open class MessageContentCell: MessageCollectionViewCell {
 		}
 		
 		guard gesture.state == .ended || gesture.state == .cancelled else { return }
-
+		
 		UIView.animate(withDuration: 0.25,
 					   delay: 0,
 					   options: .curveEaseOut,
 					   animations:
 			{
-				gestureView.frame = .init(self.initialXOrigin,
-										 gestureView.frame.origin.y,
-										 gestureView.frame.size.width,
-										 gestureView.frame.size.height)
+				self.frame = .init(self.initialXOrigin,
+								   self.frame.origin.y,
+								   self.frame.size.width,
+								   self.frame.size.height)
 		}, completion: { _ in
 			self.triggeredHaptic = false
 			self.initialXOrigin = 0
 			
-			if x > gestureView.frame.size.width * 0.3 {
+			if x > self.frame.size.width * 0.25 {
 				self.delegate?.didSwipeRight(in: self)
-			} else if x < -gestureView.frame.size.width / 2 {
+			} else if x < -self.frame.size.width / 2 {
 				self.delegate?.didSwipeLeft(in: self)
 			}
 		})
