@@ -87,6 +87,10 @@ struct MockContactItem: ContactItem {
 }
 
 internal struct MockMessage: MessageType {
+	
+	var replyMessageTitle: NSAttributedString?
+	
+	var replyMessageDescription: NSAttributedString?
 
     var messageId: String
     var sender: SenderType {
@@ -97,13 +101,21 @@ internal struct MockMessage: MessageType {
 
     var user: MockUser
 
-    private init(kind: MessageKind, user: MockUser, messageId: String, date: Date) {
+	private init(kind: MessageKind, user: MockUser, messageId: String, date: Date, replyTitle: NSAttributedString? = nil,
+				 replyDesc: NSAttributedString? = nil) {
         self.kind = kind
         self.user = user
         self.messageId = messageId
         self.sentDate = date
+		self.replyMessageTitle = replyTitle
+		self.replyMessageDescription = replyDesc
     }
     
+	init(text: String, user: MockUser, messageId: String, date: Date, replyTitle: NSAttributedString? = nil,
+		 replyDesc: NSAttributedString? = nil) {
+		self.init(kind: .text(text), user: user, messageId: messageId, date: date, replyTitle: replyTitle, replyDesc: replyDesc)
+	}
+	
     init(custom: Any?, user: MockUser, messageId: String, date: Date) {
         self.init(kind: .custom(custom), user: user, messageId: messageId, date: date)
     }

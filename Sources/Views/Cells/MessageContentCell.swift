@@ -30,6 +30,9 @@ open class MessageContentCell: MessageCollectionViewCell {
 	/// The image view displaying the avatar.
 	open var avatarView = AvatarView()
 	
+	/// The container used for holding messages that is being replied
+	open var replyMessageView = ReplyMessageView()
+	
 	/// The container used for styling and holding the message's content view.
 	open var messageContainerView: MessageContainerView = {
 		let containerView = MessageContainerView()
@@ -89,20 +92,13 @@ open class MessageContentCell: MessageCollectionViewCell {
 	public override init(frame: CGRect) {
 		super.init(frame: frame)
 		contentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-		setupGestures()
 		setupSubviews()
 	}
 	
 	required public init?(coder aDecoder: NSCoder) {
 		super.init(coder: aDecoder)
 		contentView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-		setupGestures()
 		setupSubviews()
-	}
-	
-	open func setupGestures() {
-		let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
-		addGestureRecognizer(panGesture)
 	}
 	
 	open func setupSubviews() {
@@ -113,6 +109,7 @@ open class MessageContentCell: MessageCollectionViewCell {
 		contentView.addSubview(cellBottomLabel)
 		contentView.addSubview(messageContainerView)
 		contentView.addSubview(avatarView)
+		messageContainerView.addSubview(replyMessageView)
 	}
 	
 	open override func prepareForReuse() {
@@ -136,6 +133,7 @@ open class MessageContentCell: MessageCollectionViewCell {
 		layoutMessageTopLabel(with: attributes)
 		layoutAvatarView(with: attributes)
 		layoutAccessoryView(with: attributes)
+		layoutReplyMessageView(with: attributes)
 	}
 	
 	/// Used to configure the cell.
@@ -161,6 +159,7 @@ open class MessageContentCell: MessageCollectionViewCell {
 		
 		displayDelegate.configureAccessoryView(accessoryView, for: message, at: indexPath, in: messagesCollectionView)
 		
+		replyMessageView.backgroundColor = messageColor
 		messageContainerView.backgroundColor = messageColor
 		messageContainerView.style = messageStyle
 		
@@ -173,6 +172,12 @@ open class MessageContentCell: MessageCollectionViewCell {
 		cellBottomLabel.attributedText = bottomCellLabelText
 		messageTopLabel.attributedText = topMessageLabelText
 		messageBottomLabel.attributedText = bottomMessageLabelText
+		
+		let replyMessageIndicatorColor = displayDelegate.replyMessageIndicatorColor(for: message, at: indexPath, in: messagesCollectionView)
+
+		replyMessageView.indicator.backgroundColor = replyMessageIndicatorColor
+		replyMessageView.title.attributedText = message.replyMessageTitle
+		replyMessageView.desc.attributedText = message.replyMessageDescription
 	}
 	
 	/// Handle tap gesture on contentView and its subviews.
@@ -181,7 +186,12 @@ open class MessageContentCell: MessageCollectionViewCell {
 		
 		switch true {
 			case messageContainerView.frame.contains(touchLocation) && !cellContentView(canHandle: convert(touchLocation, to: messageContainerView)):
-				delegate?.didTapMessage(in: self)
+				if replyMessageView.frame.contains(touchLocation) {
+					delegate?.didTapReply(in: self)
+				} else {
+					delegate?.didTapMessage(in: self)
+				}
+			
 			case avatarView.frame.contains(touchLocation):
 				delegate?.didTapAvatar(in: self)
 			case cellTopLabel.frame.contains(touchLocation):
@@ -199,7 +209,7 @@ open class MessageContentCell: MessageCollectionViewCell {
 		}
 	}
 	
-	@objc open override func handlePanGesture(_ gesture: UIPanGestureRecognizer) {
+	open override func handlePanGesture(_ gesture: UIPanGestureRecognizer) {
 		let translation = gesture.translation(in: self)
 		
 		if initialXOrigin == 0 {
@@ -290,6 +300,44 @@ open class MessageContentCell: MessageCollectionViewCell {
 		}
 		
 		avatarView.frame = CGRect(origin: origin, size: attributes.avatarSize)
+	}
+	
+	open func layoutReplyMessageView(with attributes: MessagesCollectionViewLayoutAttributes) {
+		replyMessageView.frame = CGRect(origin: .zero, size: attributes.replyMessageViewSize)
+		
+		replyMessageView.indicator.frame = CGRect(origin: .init(x: 0 + attributes.replyMessageInsets.left,
+																y: 0 + attributes.replyMessageInsets.top),
+													   size: .init(width: attributes.replyMessageIndicatorWidth,
+																   height: attributes.replyMessageViewSize.height -
+																	attributes.replyMessageInsets.vertical))
+		
+		replyMessageView.title.frame = .init(attributes.replyMessageIndicatorWidth
+			+ attributes.replyMessageDistanceToIndicator
+			+ attributes.replyMessageInsets.left,
+											 attributes.replyMessagePadding
+												+ attributes.replyMessageInsets.top,
+											 attributes.replyMessageViewSize.width
+												- attributes.replyMessageIndicatorWidth
+												- attributes.replyMessageDistanceToIndicator
+												- attributes.replyMessageInsets.horizontal,
+											 attributes.replyMessageTitleHeight)
+		
+		var descOrigin: CGPoint = .zero
+		
+		descOrigin.x = attributes.replyMessageIndicatorWidth
+			+ attributes.replyMessageDistanceToIndicator
+			+ attributes.replyMessageInsets.left
+		
+		descOrigin.y = attributes.replyMessageViewSize.height
+			- attributes.replyMessagePadding
+			- attributes.replyMessageInsets.bottom
+			- attributes.replyMessageDescHeight
+		
+		replyMessageView.desc.frame = CGRect(origin: descOrigin, size: .init(width: attributes.replyMessageViewSize.width
+			- attributes.replyMessageIndicatorWidth
+			- attributes.replyMessageDistanceToIndicator
+			- attributes.replyMessageInsets.horizontal,
+																			 height: attributes.replyMessageDescHeight))
 	}
 	
 	/// Positions the cell's `MessageContainerView`.

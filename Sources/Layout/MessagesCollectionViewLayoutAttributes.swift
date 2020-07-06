@@ -29,6 +29,14 @@ open class MessagesCollectionViewLayoutAttributes: UICollectionViewLayoutAttribu
 
     // MARK: - Properties
 
+	public var replyMessageViewSize: CGSize = .zero
+	public var replyMessagePadding: CGFloat = 0
+	public var replyMessageIndicatorWidth: CGFloat = 0
+	public var replyMessageDistanceToIndicator: CGFloat = 0
+	public var replyMessageTitleHeight: CGFloat = 0
+	public var replyMessageDescHeight: CGFloat = 0
+	public var replyMessageInsets: UIEdgeInsets = .zero
+
     public var avatarSize: CGSize = .zero
     public var avatarPosition = AvatarPosition(vertical: .cellBottom)
     public var avatarLeadingTrailingPadding: CGFloat = 0
@@ -59,6 +67,13 @@ open class MessagesCollectionViewLayoutAttributes: UICollectionViewLayoutAttribu
     open override func copy(with zone: NSZone? = nil) -> Any {
         // swiftlint:disable force_cast
         let copy = super.copy(with: zone) as! MessagesCollectionViewLayoutAttributes
+		copy.replyMessageViewSize = replyMessageViewSize
+		copy.replyMessagePadding = replyMessagePadding
+		copy.replyMessageIndicatorWidth = replyMessageIndicatorWidth
+		copy.replyMessageDistanceToIndicator = replyMessageDistanceToIndicator
+		copy.replyMessageTitleHeight = replyMessageTitleHeight
+		copy.replyMessageDescHeight = replyMessageDescHeight
+		copy.replyMessageInsets = replyMessageInsets
         copy.avatarSize = avatarSize
         copy.avatarPosition = avatarPosition
         copy.avatarLeadingTrailingPadding = avatarLeadingTrailingPadding
@@ -85,8 +100,15 @@ open class MessagesCollectionViewLayoutAttributes: UICollectionViewLayoutAttribu
         // MARK: - LEAVE this as is
         if let attributes = object as? MessagesCollectionViewLayoutAttributes {
             return super.isEqual(object) && attributes.avatarSize == avatarSize
-                && attributes.avatarPosition == avatarPosition
-                && attributes.avatarLeadingTrailingPadding == avatarLeadingTrailingPadding
+				&& attributes.replyMessageViewSize == replyMessageViewSize
+				&& attributes.replyMessagePadding == replyMessagePadding
+				&& attributes.replyMessageIndicatorWidth == replyMessageIndicatorWidth
+				&& attributes.replyMessageDistanceToIndicator == replyMessageDistanceToIndicator
+				&& attributes.replyMessageTitleHeight == replyMessageTitleHeight
+				&& attributes.replyMessageDescHeight == replyMessageDescHeight
+				&& attributes.replyMessageInsets == replyMessageInsets
+				&& attributes.avatarPosition == avatarPosition
+				&& attributes.avatarLeadingTrailingPadding == avatarLeadingTrailingPadding
                 && attributes.messageContainerSize == messageContainerSize
                 && attributes.messageContainerPadding == messageContainerPadding
                 && attributes.messageLabelFont == messageLabelFont

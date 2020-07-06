@@ -32,6 +32,11 @@ open class MessageSizeCalculator: CellSizeCalculator {
         self.layout = layout
     }
 
+	public var replyMessagePadding: CGFloat = 2
+	public var replyMessageIndicatorWidth: CGFloat = 5
+	public var replyMessageDistanceToIndicator: CGFloat = 4
+	public var replyMessageInsets = UIEdgeInsets(top: 7, left: 14, bottom: 7, right: 14)
+	
     public var incomingAvatarSize = CGSize(width: 30, height: 30)
     public var outgoingAvatarSize = CGSize(width: 30, height: 30)
 
@@ -70,6 +75,15 @@ open class MessageSizeCalculator: CellSizeCalculator {
         let dataSource = messagesLayout.messagesDataSource
         let indexPath = attributes.indexPath
         let message = dataSource.messageForItem(at: indexPath, in: messagesLayout.messagesCollectionView)
+		let replySize = replyMessageSize(for: message)
+		
+		attributes.replyMessageViewSize = replySize.2
+		attributes.replyMessagePadding = replyMessagePadding
+		attributes.replyMessageIndicatorWidth = replyMessageIndicatorWidth
+		attributes.replyMessageDistanceToIndicator = replyMessageDistanceToIndicator
+		attributes.replyMessageTitleHeight = replySize.0
+		attributes.replyMessageDescHeight = replySize.1
+		attributes.replyMessageInsets = replyMessageInsets
 
         attributes.avatarSize = avatarSize(for: message)
         attributes.avatarPosition = avatarPosition(for: message)
@@ -246,6 +260,51 @@ open class MessageSizeCalculator: CellSizeCalculator {
         let isFromCurrentSender = dataSource.isFromCurrentSender(message: message)
         return isFromCurrentSender ? outgoingAccessoryViewPosition : incomingAccessoryViewPosition
     }
+	
+	// MARK: - ReplyMessageView
+	
+	open func replyMessageSize(for message: MessageType) -> (CGFloat, CGFloat, CGSize) {
+		let maxWidth = messageContainerMaxWidth(for: message)
+			- replyMessageIndicatorWidth
+			- replyMessageDistanceToIndicator
+			- replyMessageInsets.horizontal
+		
+		var replyMessageSize: CGSize = .zero
+		var replyMessageTitleHeight: CGFloat = 0
+		var replyMessageDescHeight: CGFloat = 0
+		
+		if let title = message.replyMessageTitle {
+			if !title.string.isEmpty,
+				let font = title.attribute(.font, at: 0, effectiveRange: nil) as? UIFont {
+				let titleSize = labelSize(for: title, considering: maxWidth, height: font.lineHeight)
+				replyMessageSize = titleSize
+				replyMessageTitleHeight = font.lineHeight
+			}
+		}
+		
+		if let desc = message.replyMessageDescription {
+			
+			if !desc.string.isEmpty,
+				let font = desc.attribute(.font, at: 0, effectiveRange: nil) as? UIFont {
+				let descSize = labelSize(for: desc, considering: maxWidth, height: font.lineHeight)
+
+				replyMessageSize.height += font.lineHeight
+				replyMessageSize.width = max(descSize.width, replyMessageSize.width)
+				replyMessageDescHeight = font.lineHeight
+			}
+		}
+				
+		if replyMessageSize != .zero {
+			replyMessageSize.height += replyMessagePadding * 3
+			replyMessageSize.height += replyMessageInsets.vertical
+			replyMessageSize.width = min(replyMessageSize.width
+				+ replyMessageIndicatorWidth
+				+ replyMessageInsets.horizontal
+				+ replyMessageDistanceToIndicator, maxWidth)
+		}
+		
+		return (replyMessageTitleHeight, replyMessageDescHeight, replyMessageSize)
+	}
 
     // MARK: - MessageContainer
 
@@ -277,12 +336,19 @@ open class MessageSizeCalculator: CellSizeCalculator {
         return layout
     }
 
-    internal func labelSize(for attributedText: NSAttributedString, considering maxWidth: CGFloat) -> CGSize {
-        let constraintBox = CGSize(width: maxWidth, height: .greatestFiniteMagnitude)
+	internal func labelSize(for attributedText: NSAttributedString, considering maxWidth: CGFloat, height: CGFloat? = nil) -> CGSize {
+        let constraintBox = CGSize(width: maxWidth, height: height ?? .greatestFiniteMagnitude)
         let rect = attributedText.boundingRect(with: constraintBox, options: [.usesLineFragmentOrigin, .usesFontLeading], context: nil).integral
 
         return rect.size
     }
+	
+	internal func includeReplyMessageSize(for message: MessageType, forContainerSize containerSize: CGSize) -> CGSize {
+		let replySize = replyMessageSize(for: message)
+
+		return .init(width: max(containerSize.width, replySize.2.width),
+					 height: containerSize.height + replySize.2.height)
+	}
 }
 
 fileprivate extension UIEdgeInsets {

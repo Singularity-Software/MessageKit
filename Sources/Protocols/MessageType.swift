@@ -37,6 +37,12 @@ public protocol MessageType {
     /// The date the message was sent.
     var sentDate: Date { get }
 
+    /// The title of the message that is being replied
+    var replyMessageTitle: NSAttributedString? { get }
+    
+    /// The description of the message that is being replied
+    var replyMessageDescription: NSAttributedString? { get }
+    
     /// The kind of message and its underlying kind.
     var kind: MessageKind { get }
 

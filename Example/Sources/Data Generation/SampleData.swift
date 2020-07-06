@@ -162,8 +162,16 @@ final internal class SampleData {
 
         switch randomMessageType() {
         case .Text:
-            let randomSentence = Lorem.sentence()
-            return MockMessage(text: randomSentence, user: user, messageId: uniqueID, date: date)
+			let randomInt = Int.random(in: 1 ... 2)
+			let randomSentence = Lorem.sentence()
+			if randomInt == 2 {
+				let replyTitle = Lorem.sentence()
+				let replySentence = Lorem.sentence()
+				return MockMessage(text: randomSentence, user: user, messageId: uniqueID, date: date, replyTitle: attributedString(with: replyTitle), replyDesc: attributedString(with: replySentence))
+			} else {
+				return MockMessage(text: randomSentence, user: user, messageId: uniqueID, date: date)
+			}
+         
         case .AttributedText:
             let randomSentence = Lorem.sentence()
             let attributedText = attributedString(with: randomSentence)

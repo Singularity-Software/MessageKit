@@ -61,7 +61,9 @@ open class ContactMessageSizeCalculator: MessageSizeCalculator {
         messageContainerSize.width += messageInsets.horizontal
         messageContainerSize.height += messageInsets.vertical
         
-        return messageContainerSize
+		return includeReplyMessageSize(for: message,
+									   forContainerSize: messageContainerSize)
+		
     }
     
     open override func configure(attributes: UICollectionViewLayoutAttributes) {

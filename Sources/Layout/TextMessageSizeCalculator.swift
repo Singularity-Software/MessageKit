@@ -26,8 +26,8 @@ import Foundation
 
 open class TextMessageSizeCalculator: MessageSizeCalculator {
 
-    public var incomingMessageLabelInsets = UIEdgeInsets(top: 7, left: 18, bottom: 7, right: 14)
-    public var outgoingMessageLabelInsets = UIEdgeInsets(top: 7, left: 14, bottom: 7, right: 18)
+    public var incomingMessageLabelInsets = UIEdgeInsets(top: 7, left: 14, bottom: 7, right: 14)
+    public var outgoingMessageLabelInsets = UIEdgeInsets(top: 7, left: 14, bottom: 7, right: 14)
 
     public var messageLabelFont = UIFont.preferredFont(forTextStyle: .body)
 
@@ -64,7 +64,8 @@ open class TextMessageSizeCalculator: MessageSizeCalculator {
         messageContainerSize.width += messageInsets.horizontal
         messageContainerSize.height += messageInsets.vertical
 
-        return messageContainerSize
+		return includeReplyMessageSize(for: message,
+									   forContainerSize: messageContainerSize)
     }
 
     open override func configure(attributes: UICollectionViewLayoutAttributes) {

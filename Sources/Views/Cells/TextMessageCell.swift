@@ -46,7 +46,10 @@ open class TextMessageCell: MessageContentCell {
         if let attributes = layoutAttributes as? MessagesCollectionViewLayoutAttributes {
             messageLabel.textInsets = attributes.messageLabelInsets
             messageLabel.messageLabelFont = attributes.messageLabelFont
-            messageLabel.frame = messageContainerView.bounds
+			messageLabel.frame = .init(messageContainerView.bounds.origin.x,
+									   messageContainerView.bounds.origin.y + replyMessageView.bounds.height,
+									   messageContainerView.bounds.width,
+									   messageContainerView.bounds.height - replyMessageView.bounds.height)
         }
     }
 

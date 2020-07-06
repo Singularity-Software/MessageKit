@@ -62,6 +62,8 @@
 		8962AC951F87AB860030B058 /* MessageStyleTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8962AC751F87AB230030B058 /* MessageStyleTests.swift */; };
 		8962AC991F87AB860030B058 /* MessagesDisplayDelegateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8962AC811F87AB230030B058 /* MessagesDisplayDelegateTests.swift */; };
 		B0C8D99B1F73076B000A86E4 /* MessageKitAssets.bundle in Resources */ = {isa = PBXBuildFile; fileRef = B0C8D99A1F73076B000A86E4 /* MessageKitAssets.bundle */; };
+		B60198C324AD89E60039A4EC /* ReplyMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60198C224AD89E60039A4EC /* ReplyMessageView.swift */; };
+		B60198C524AD8A080039A4EC /* ReplyMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60198C424AD8A080039A4EC /* ReplyMessageView.swift */; };
 		B7A03F181F86682C006AEF79 /* MessagesCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A03F161F86682C006AEF79 /* MessagesCollectionViewFlowLayout.swift */; };
 		B7A03F191F86682C006AEF79 /* MessagesCollectionViewLayoutAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A03F171F86682C006AEF79 /* MessagesCollectionViewLayoutAttributes.swift */; };
 		B7A03F251F866895006AEF79 /* NSConstraintLayoutSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A03F1A1F866895006AEF79 /* NSConstraintLayoutSet.swift */; };
@@ -179,6 +181,8 @@
 		8962AC851F87AB230030B058 /* AvatarViewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarViewTests.swift; sourceTree = "<group>"; };
 		8962AC861F87AB230030B058 /* MessageCollectionViewCellTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCollectionViewCellTests.swift; sourceTree = "<group>"; };
 		B0C8D99A1F73076B000A86E4 /* MessageKitAssets.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = MessageKitAssets.bundle; sourceTree = "<group>"; };
+		B60198C224AD89E60039A4EC /* ReplyMessageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ReplyMessageView.swift; path = Sources/Views/ReplyMessageView.swift; sourceTree = SOURCE_ROOT; };
+		B60198C424AD8A080039A4EC /* ReplyMessageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplyMessageView.swift; sourceTree = "<group>"; };
 		B7A03F161F86682C006AEF79 /* MessagesCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 		B7A03F171F86682C006AEF79 /* MessagesCollectionViewLayoutAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesCollectionViewLayoutAttributes.swift; sourceTree = "<group>"; };
 		B7A03F1A1F866895006AEF79 /* NSConstraintLayoutSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSConstraintLayoutSet.swift; sourceTree = "<group>"; };
@@ -267,6 +271,7 @@
 		2EB618F11F846899007FBA0E /* HeadersFooters */ = {
 			isa = PBXGroup;
 			children = (
+				B60198C224AD89E60039A4EC /* ReplyMessageView.swift */,
 				1F6C040D206A2AF4007BDE44 /* MessageReusableView.swift */,
 			);
 			path = HeadersFooters;
@@ -437,6 +442,7 @@
 				2EB618F11F846899007FBA0E /* HeadersFooters */,
 				B7A03F3E1F86694F006AEF79 /* AvatarView.swift */,
 				38F8063121740D9D00CDB9DB /* BubbleCircle.swift */,
+				B60198C424AD8A080039A4EC /* ReplyMessageView.swift */,
 				38F8063421740DAD00CDB9DB /* TypingBubble.swift */,
 				1FE783A7206633C0007FA024 /* InsetLabel.swift */,
 				B7A03F431F86694F006AEF79 /* MessageContainerView.swift */,
@@ -676,6 +682,7 @@
 				B7A03F5F1F8669CA006AEF79 /* MessageLabelDelegate.swift in Sources */,
 				B7A03F4C1F86694F006AEF79 /* PlayButtonView.swift in Sources */,
 				1FD5896420660C1C004B5081 /* LocationItem.swift in Sources */,
+				B60198C324AD89E60039A4EC /* ReplyMessageView.swift in Sources */,
 				B7A03F291F866895006AEF79 /* Sender.swift in Sources */,
 				B7A03F4F1F86697C006AEF79 /* MessagesViewController.swift in Sources */,
 				B7A03F251F866895006AEF79 /* NSConstraintLayoutSet.swift in Sources */,
@@ -686,6 +693,7 @@
 				B7A03F4D1F86694F006AEF79 /* MessagesCollectionView.swift in Sources */,
 				0EF0888C206F7E83007F2F58 /* CellSizeCalculator.swift in Sources */,
 				5073C1152175BE750040EAD5 /* AudioItem.swift in Sources */,
+				B60198C524AD8A080039A4EC /* ReplyMessageView.swift in Sources */,
 				1FE783A4206629A5007FA024 /* MediaMessageSizeCalculator.swift in Sources */,
 				B7A03F731F866A06006AEF79 /* MessageKit+Availability.swift in Sources */,
 				1FE7839E20662835007FA024 /* MessageSizeCalculator.swift in Sources */,

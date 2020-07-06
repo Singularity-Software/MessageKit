@@ -29,7 +29,22 @@ import MapKit
 public protocol MessagesDisplayDelegate: AnyObject {
 
     // MARK: - All Messages
-
+	
+	/// Specifies the color of the indicator in a reply message.
+	///
+	/// - Parameters:
+	///   - message: A `MessageType` with a `MessageKind` case of `.text` to which the color will apply.
+	///   - indexPath: The `IndexPath` of the cell.
+	///   - messagesCollectionView: The `MessagesCollectionView` in which this cell will be displayed.
+	///
+	/// - Note:
+	///   The default value returned by this method is determined by the messages `SenderType`.
+	///
+	///   Current sender: UIColor.white
+	///
+	///   All other senders: UIColor.darkText
+	func replyMessageIndicatorColor(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> UIColor
+	
     /// Specifies the `MessageStyle` to be used for a `MessageContainerView`.
     ///
     /// - Parameters:
@@ -219,6 +234,14 @@ public extension MessagesDisplayDelegate {
 
     // MARK: - All Messages Defaults
 
+	func replyMessageIndicatorColor(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> UIColor {
+		guard let dataSource = messagesCollectionView.messagesDataSource else {
+			fatalError(MessageKitError.nilMessagesDataSource)
+		}
+		
+		return dataSource.isFromCurrentSender(message: message) ? .backgroundColor : .labelColor
+	}
+	
     func messageStyle(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> MessageStyle {
         return .bubble
     }

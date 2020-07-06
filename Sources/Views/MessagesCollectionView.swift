@@ -233,22 +233,8 @@ extension MessagesCollectionView: UIGestureRecognizerDelegate {
 			let translation = panGesture.translation(in: view)
 			return abs(translation.y) <= abs(translation.x) && !(isDragging || isDecelerating)
 		}
-		
+
 		return super.gestureRecognizerShouldBegin(gestureRecognizer)
-	}
-	
-	public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
-								  shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-		guard let arrayOfGestureRecognizers = gestureRecognizers else { return false }
-		
-		for gesture in arrayOfGestureRecognizers {
-			if gestureRecognizer == gesture &&
-				otherGestureRecognizer == self.panGesture {
-				return true
-			}
-		}
-		
-		return false
 	}
 	
 	public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
