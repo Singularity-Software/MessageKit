@@ -233,7 +233,7 @@ open class MessageContentCell: MessageCollectionViewCell {
 			triggeredHaptic = false
 		}
 		
-		guard gesture.state == .ended || gesture.state == .cancelled else { return }
+		guard gesture.state == .ended || gesture.state == .cancelled || gesture.state == .failed else { return }
 		
 		UIView.animate(withDuration: 0.25,
 					   delay: 0,
