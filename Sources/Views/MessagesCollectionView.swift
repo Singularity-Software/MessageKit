@@ -36,6 +36,8 @@ open class MessagesCollectionView: UICollectionView {
 	
 	open weak var messageCellDelegate: MessageCellDelegate?
 	
+	open var handlingPanGestureCell: MessageCollectionViewCell?
+	
 	lazy var panGesture: UIPanGestureRecognizer = {
 		let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture(_:)))
 		panGesture.delegate = self
@@ -113,8 +115,11 @@ open class MessagesCollectionView: UICollectionView {
 		let touchLocation = gesture.location(in: self)
 		guard let indexPath = indexPathForItem(at: touchLocation) else { return }
 		
-		let cell = cellForItem(at: indexPath) as? MessageCollectionViewCell
-		cell?.handlePanGesture(gesture)
+		if gesture.state == .began {
+			handlingPanGestureCell = cellForItem(at: indexPath) as? MessageCollectionViewCell
+		}
+		
+		handlingPanGestureCell?.handlePanGesture(gesture)
 	}
 	
 	// NOTE: It's possible for small content size this wouldn't work - https://github.com/MessageKit/MessageKit/issues/725
@@ -238,6 +243,6 @@ extension MessagesCollectionView: UIGestureRecognizerDelegate {
 	}
 	
 	public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-		return true
+		return false
 	}
 }

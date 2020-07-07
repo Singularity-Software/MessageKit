@@ -186,11 +186,13 @@ open class MessageContentCell: MessageCollectionViewCell {
 		
 		switch true {
 			case messageContainerView.frame.contains(touchLocation) && !cellContentView(canHandle: convert(touchLocation, to: messageContainerView)):
-				if replyMessageView.frame.contains(touchLocation) {
+				var replyMessageViewFrame = replyMessageView.frame
+				replyMessageViewFrame.origin.x += messageContainerView.frame.origin.x
+				if replyMessageViewFrame.contains(touchLocation) {
 					delegate?.didTapReply(in: self)
 				} else {
 					delegate?.didTapMessage(in: self)
-				}
+			}
 			
 			case avatarView.frame.contains(touchLocation):
 				delegate?.didTapAvatar(in: self)
