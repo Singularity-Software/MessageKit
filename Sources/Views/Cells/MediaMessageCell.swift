@@ -32,6 +32,17 @@ open class MediaMessageCell: MessageContentCell {
         let playButtonView = PlayButtonView()
         return playButtonView
     }()
+	
+	@available(iOS 13.0, *)
+	open lazy var playImageView: UIImageView = {
+		let iv = UIImageView()
+		iv.contentMode = .scaleAspectFill
+		iv.clipsToBounds = true
+		iv.tintColor = .white
+		let config: UIImage.SymbolConfiguration = .init(pointSize: 35)
+		iv.image = UIImage(systemName: "play.circle.fill", withConfiguration: config)
+		return iv
+	}()
 
     /// The image view display the media content.
     open var imageView: UIImageView = {
@@ -45,14 +56,23 @@ open class MediaMessageCell: MessageContentCell {
     /// Responsible for setting up the constraints of the cell's subviews.
     open func setupConstraints() {
         imageView.fillSuperview()
-        playButtonView.centerInSuperview()
-        playButtonView.constraint(equalTo: CGSize(width: 35, height: 35))
+		if #available(iOS 13, *) {
+			playImageView.centerInSuperview()
+			playImageView.constraint(equalTo: CGSize(width: 35, height: 35))
+		} else {
+			playButtonView.centerInSuperview()
+			playButtonView.constraint(equalTo: CGSize(width: 35, height: 35))
+		}
     }
 
     open override func setupSubviews() {
         super.setupSubviews()
         messageContainerView.addSubview(imageView)
-        messageContainerView.addSubview(playButtonView)
+		if #available(iOS 13, *) {
+			messageContainerView.addSubview(playImageView)
+		} else {
+			messageContainerView.addSubview(playButtonView)
+		}
         setupConstraints()
     }
     
@@ -71,10 +91,20 @@ open class MediaMessageCell: MessageContentCell {
         switch message.kind {
         case .photo(let mediaItem):
             imageView.image = mediaItem.image ?? mediaItem.placeholderImage
-            playButtonView.isHidden = true
+			if #available(iOS 13.0, *) {
+				playImageView.isHidden = true
+			} else {
+				playButtonView.isHidden = true
+			}
+			
         case .video(let mediaItem):
-            imageView.image = mediaItem.image ?? mediaItem.placeholderImage
-            playButtonView.isHidden = false
+			imageView.image = mediaItem.image ?? mediaItem.placeholderImage
+			if #available(iOS 13.0, *) {
+				playImageView.isHidden = false
+			} else {
+				playButtonView.isHidden = false
+			}
+
         default:
             break
         }
