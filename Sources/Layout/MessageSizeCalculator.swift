@@ -35,7 +35,7 @@ open class MessageSizeCalculator: CellSizeCalculator {
 	public var replyMessagePadding: CGFloat = 2
 	public var replyMessageIndicatorWidth: CGFloat = 5
 	public var replyMessageDistanceToIndicator: CGFloat = 4
-	public var replyMessageInsets = UIEdgeInsets(top: 7, left: 14, bottom: 7, right: 14)
+	public var replyMessageInsets = UIEdgeInsets(top: 7, left: 14, bottom: 0, right: 14)
 	
     public var incomingAvatarSize = CGSize(width: 30, height: 30)
     public var outgoingAvatarSize = CGSize(width: 30, height: 30)
