@@ -305,7 +305,9 @@ open class MessageContentCell: MessageCollectionViewCell {
 	}
 	
 	open func layoutReplyMessageView(with attributes: MessagesCollectionViewLayoutAttributes) {
-		replyMessageView.frame = CGRect(origin: .zero, size: attributes.replyMessageViewSize)
+		replyMessageView.frame = CGRect(origin: .zero,
+										size: .init(width: max(attributes.replyMessageViewSize.width, attributes.messageContainerSize.width),
+																   height: attributes.replyMessageViewSize.height))
 		
 		replyMessageView.indicator.frame = CGRect(origin: .init(x: 0 + attributes.replyMessageInsets.left,
 																y: 0 + attributes.replyMessageInsets.top),
