@@ -113,9 +113,9 @@ open class MessagesCollectionView: UICollectionView {
 	@objc
 	open func handlePanGesture(_ gesture: UIPanGestureRecognizer) {
 		let touchLocation = gesture.location(in: self)
-		guard let indexPath = indexPathForItem(at: touchLocation) else { return }
 		
-		if gesture.state == .began {
+		if gesture.state == .began,
+			let indexPath = indexPathForItem(at: touchLocation) {
 			handlingPanGestureCell = cellForItem(at: indexPath) as? MessageCollectionViewCell
 		}
 		
