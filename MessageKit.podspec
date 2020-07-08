@@ -22,6 +22,6 @@ Pod::Spec.new do |s|
 
    s.requires_arc = true
 
-   s.dependency 'InputBarAccessoryView', :git => "https://github.com/Singularity-Software/InputBarAccessoryView.git"
+   s.dependency 'InputBarAccessoryView'
 
 end
