@@ -107,5 +107,7 @@ open class DocumentMessageCell: MessageContentCell {
 
         nameLabel.textColor = textColor
         sizeLabel.textColor = subtitleTextColor
+		
+		displayDelegate.configureDocumentMessageIcon(documentIcon, for: message, at: indexPath, in: messagesCollectionView)
     }
 }

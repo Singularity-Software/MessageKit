@@ -203,6 +203,17 @@ public protocol MessagesDisplayDelegate: AnyObject {
     ///   - messagesCollectionView: The `MessagesCollectionView` in which this cell will be displayed.
     func configureMediaMessageImageView(_ imageView: UIImageView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView)
 
+	// MARK: - Document Messages
+	
+	/// Used to configure the `UIImageView` of a `DocumentMessageCell.
+	///
+	/// - Parameters:
+	///   - imageView: The `UIImageView` of the cell.
+	///   - message: The `MessageType` that will be displayed by this cell.
+	///   - indexPath: The `IndexPath` of the cell.
+	///   - messagesCollectionView: The `MessagesCollectionView` in which this cell will be displayed.
+	func configureDocumentMessageIcon(_ imageView: UIImageView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView)
+	
     // MARK: - Audio Message
     
     /// Used to configure the audio cell UI:
@@ -286,6 +297,8 @@ public extension MessagesDisplayDelegate {
 
     func configureAccessoryView(_ accessoryView: UIView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {}
 
+	func configureDocumentMessageIcon(_ imageView: UIImageView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {}
+	
     // MARK: - Text Messages Defaults
 
     func textColor(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> UIColor {
