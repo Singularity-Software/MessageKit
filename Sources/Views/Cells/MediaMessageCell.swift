@@ -105,14 +105,6 @@ open class MediaMessageCell: MessageContentCell {
 					playButtonView.isHidden = false
 			}
 			
-			case .document(let mediaItem):
-				imageView.image = mediaItem.image ?? mediaItem.placeholderImage
-				if #available(iOS 13.0, *) {
-					playImageView.isHidden = true
-				} else {
-					playButtonView.isHidden = true
-			}
-			
 			default:
 				break
 		}

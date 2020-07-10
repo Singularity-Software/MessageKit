@@ -54,6 +54,18 @@ private struct ImageMediaItem: MediaItem {
 
 }
 
+private struct DocumentItem: FileItem {
+	var url: URL
+	var bytes: Int
+	var name: String?
+	
+	init(url: URL) {
+		self.url = url
+		self.bytes = Int.random()
+		self.name = Lorem.word()
+	}
+}
+
 private struct MockAudiotem: AudioItem {
 
     var url: URL
@@ -114,6 +126,10 @@ internal struct MockMessage: MessageType {
 	init(text: String, user: MockUser, messageId: String, date: Date, replyTitle: NSAttributedString? = nil,
 		 replyDesc: NSAttributedString? = nil) {
 		self.init(kind: .text(text), user: user, messageId: messageId, date: date, replyTitle: replyTitle, replyDesc: replyDesc)
+	}
+	
+	init(documentUrl: URL, user: MockUser, messageId: String, date: Date) {
+		self.init(kind: .document(DocumentItem(url: documentUrl)), user: user, messageId: messageId, date: date)
 	}
 	
     init(custom: Any?, user: MockUser, messageId: String, date: Date) {

@@ -165,7 +165,7 @@ open class MessagesCollectionViewFlowLayout: UICollectionViewFlowLayout {
 	}()
 	lazy open var photoMessageSizeCalculator = MediaMessageSizeCalculator(layout: self)
 	lazy open var videoMessageSizeCalculator = MediaMessageSizeCalculator(layout: self)
-	lazy open var documentMessageSizeCalculator = MediaMessageSizeCalculator(layout: self)
+	lazy open var documentMessageSizeCalculator = DocumentMessageSizeCalculator(layout: self)
 	lazy open var locationMessageSizeCalculator = LocationMessageSizeCalculator(layout: self)
 	lazy open var audioMessageSizeCalculator = AudioMessageSizeCalculator(layout: self)
 	lazy open var contactMessageSizeCalculator = ContactMessageSizeCalculator(layout: self)
