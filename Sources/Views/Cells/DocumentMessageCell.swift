@@ -96,7 +96,7 @@ open class DocumentMessageCell: MessageContentCell {
         guard case let .document(documentItem) = message.kind else { fatalError("Failed decorate document cell") }
         
         nameLabel.text = documentItem.name
-        sizeLabel.text = Units(bytes: documentItem.bytes).getReadableUnit()
+        sizeLabel.text = documentItem.info
         
         guard let displayDelegate = messagesCollectionView.messagesDisplayDelegate else {
             fatalError(MessageKitError.nilMessagesDisplayDelegate)

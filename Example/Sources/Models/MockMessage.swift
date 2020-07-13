@@ -58,11 +58,14 @@ private struct DocumentItem: FileItem {
 	var url: URL
 	var bytes: Int
 	var name: String?
-	
+	var info: String
+
 	init(url: URL) {
+		let bytes = Int.random()
 		self.url = url
-		self.bytes = Int.random()
+		self.bytes = bytes
 		self.name = Lorem.word()
+		self.info = Units(bytes: bytes).getReadableUnit()
 	}
 }
 

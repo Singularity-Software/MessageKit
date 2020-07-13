@@ -66,7 +66,6 @@
 		B60198C524AD8A080039A4EC /* ReplyMessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B60198C424AD8A080039A4EC /* ReplyMessageView.swift */; };
 		B6A6DACA24B867E8001F1115 /* DocumentMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A6DAC924B867E8001F1115 /* DocumentMessageCell.swift */; };
 		B6A6DACC24B86D83001F1115 /* FileItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A6DACB24B86D83001F1115 /* FileItem.swift */; };
-		B6A6DACE24B86E8D001F1115 /* Units.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A6DACD24B86E8D001F1115 /* Units.swift */; };
 		B6A6DAD024B86FD9001F1115 /* DocumentMessageSizeCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = B6A6DACF24B86FD9001F1115 /* DocumentMessageSizeCalculator.swift */; };
 		B7A03F181F86682C006AEF79 /* MessagesCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A03F161F86682C006AEF79 /* MessagesCollectionViewFlowLayout.swift */; };
 		B7A03F191F86682C006AEF79 /* MessagesCollectionViewLayoutAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = B7A03F171F86682C006AEF79 /* MessagesCollectionViewLayoutAttributes.swift */; };
@@ -189,7 +188,6 @@
 		B60198C424AD8A080039A4EC /* ReplyMessageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReplyMessageView.swift; sourceTree = "<group>"; };
 		B6A6DAC924B867E8001F1115 /* DocumentMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentMessageCell.swift; sourceTree = "<group>"; };
 		B6A6DACB24B86D83001F1115 /* FileItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FileItem.swift; sourceTree = "<group>"; };
-		B6A6DACD24B86E8D001F1115 /* Units.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Units.swift; sourceTree = "<group>"; };
 		B6A6DACF24B86FD9001F1115 /* DocumentMessageSizeCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentMessageSizeCalculator.swift; sourceTree = "<group>"; };
 		B7A03F161F86682C006AEF79 /* MessagesCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 		B7A03F171F86682C006AEF79 /* MessagesCollectionViewLayoutAttributes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessagesCollectionViewLayoutAttributes.swift; sourceTree = "<group>"; };
@@ -440,7 +438,6 @@
 				B7A03F1F1F866895006AEF79 /* MessageStyle.swift */,
 				B7A03F1A1F866895006AEF79 /* NSConstraintLayoutSet.swift */,
 				B7A03F1E1F866895006AEF79 /* Sender.swift */,
-				B6A6DACD24B86E8D001F1115 /* Units.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -653,7 +650,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				382C794221705D2000F4FAF5 /* HorizontalEdgeInsets.swift in Sources */,
-				B6A6DACE24B86E8D001F1115 /* Units.swift in Sources */,
 				B7A03F3C1F866946006AEF79 /* LocationMessageCell.swift in Sources */,
 				1FF377AA20087D78004FD648 /* MessagesViewController+Menu.swift in Sources */,
 				B7A03F5B1F8669CA006AEF79 /* MessageType.swift in Sources */,

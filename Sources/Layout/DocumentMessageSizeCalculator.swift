@@ -29,7 +29,7 @@ open class DocumentMessageSizeCalculator: MessageSizeCalculator {
         switch message.kind {
             case .document(let item):
                 attributedText = NSAttributedString(string: item.name ?? "", attributes: [.font: nameLabelFont])
-                fileSizeAttributedText = NSAttributedString(string: Units(bytes: item.bytes).getReadableUnit(), attributes: [.font: fileSizeLabelFont])
+				fileSizeAttributedText = NSAttributedString(string: item.info, attributes: [.font: fileSizeLabelFont])
             
             default:
                 fatalError("messageContainerSize received unhandled MessageDataType: \(message.kind)")

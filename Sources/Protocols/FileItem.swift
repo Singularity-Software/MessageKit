@@ -19,5 +19,8 @@ public protocol FileItem {
     
     /// The name of the file.
     var name: String? { get }
+	
+	/// The document info to be displayed
+	var info: String { get }
 
 }
