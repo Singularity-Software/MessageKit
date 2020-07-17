@@ -188,6 +188,7 @@ open class MessageContentCell: MessageCollectionViewCell {
 			case messageContainerView.frame.contains(touchLocation) && !cellContentView(canHandle: convert(touchLocation, to: messageContainerView)):
 				var replyMessageViewFrame = replyMessageView.frame
 				replyMessageViewFrame.origin.x += messageContainerView.frame.origin.x
+				replyMessageViewFrame.origin.y += messageContainerView.frame.origin.y
 				if replyMessageViewFrame.contains(touchLocation) {
 					delegate?.didTapReply(in: self)
 				} else {
