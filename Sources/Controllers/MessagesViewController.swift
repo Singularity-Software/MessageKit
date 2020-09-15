@@ -30,9 +30,6 @@ import InputBarAccessoryView
 open class MessagesViewController: UIViewController,
 UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
 
-	/// The internal search bar
-	open var searchBar = UISearchBar()
-	
     /// The `MessagesCollectionView` managed by the messages view controller object.
     open var messagesCollectionView = MessagesCollectionView()
 
@@ -169,22 +166,13 @@ UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     }
 
     private func setupSubviews() {
-		view.addSubview(searchBar)
         view.addSubview(messagesCollectionView)
     }
 
     private func setupConstraints() {
-		searchBar.translatesAutoresizingMaskIntoConstraints = false
-		
-		if #available(iOS 11.0, *) {
-			searchBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
-			searchBar.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 8).isActive = true
-			searchBar.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -8).isActive = true
-		}
-
         messagesCollectionView.translatesAutoresizingMaskIntoConstraints = false
         
-        let top = messagesCollectionView.topAnchor.constraint(equalTo: searchBar.bottomAnchor)
+        let top = messagesCollectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: topLayoutGuide.length)
         let bottom = messagesCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         if #available(iOS 11.0, *) {
             let leading = messagesCollectionView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor)
