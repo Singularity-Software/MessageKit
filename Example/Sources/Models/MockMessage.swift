@@ -103,7 +103,7 @@ struct MockContactItem: ContactItem {
 
 internal struct MockMessage: MessageType {
 	
-	var replyMessageTitle: NSAttributedString?
+	var supplementalMessageTitle: NSAttributedString?
 	
 	var replyMessageDescription: NSAttributedString?
 
@@ -122,7 +122,7 @@ internal struct MockMessage: MessageType {
         self.user = user
         self.messageId = messageId
         self.sentDate = date
-		self.replyMessageTitle = replyTitle
+		self.supplementalMessageTitle = replyTitle
 		self.replyMessageDescription = replyDesc
     }
     

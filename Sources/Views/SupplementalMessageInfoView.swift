@@ -7,7 +7,7 @@
 
 import UIKit
 
-open class ReplyMessageView: UIView {
+open class SupplementalMessageInfoView: UIView {
 	open var title: InsetLabel = {
 		let lb = InsetLabel()
 		lb.numberOfLines = 1

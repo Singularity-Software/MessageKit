@@ -47,9 +47,9 @@ open class TextMessageCell: MessageContentCell {
             messageLabel.textInsets = attributes.messageLabelInsets
             messageLabel.messageLabelFont = attributes.messageLabelFont
 			messageLabel.frame = .init(messageContainerView.bounds.origin.x,
-									   messageContainerView.bounds.origin.y + replyMessageView.bounds.height,
+									   messageContainerView.bounds.origin.y + supplementalMessageInfoView.bounds.height,
 									   messageContainerView.bounds.width,
-									   messageContainerView.bounds.height - replyMessageView.bounds.height)
+									   messageContainerView.bounds.height - supplementalMessageInfoView.bounds.height)
         }
     }
 

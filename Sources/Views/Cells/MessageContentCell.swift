@@ -31,7 +31,7 @@ open class MessageContentCell: MessageCollectionViewCell {
 	open var avatarView = AvatarView()
 	
 	/// The container used for holding messages that is being replied
-	open var replyMessageView = ReplyMessageView()
+	open var supplementalMessageInfoView = SupplementalMessageInfoView()
 	
 	/// The container used for styling and holding the message's content view.
 	open var messageContainerView: MessageContainerView = {
@@ -109,7 +109,7 @@ open class MessageContentCell: MessageCollectionViewCell {
 		contentView.addSubview(cellBottomLabel)
 		contentView.addSubview(messageContainerView)
 		contentView.addSubview(avatarView)
-		messageContainerView.addSubview(replyMessageView)
+		messageContainerView.addSubview(supplementalMessageInfoView)
 	}
 	
 	open override func prepareForReuse() {
@@ -133,7 +133,7 @@ open class MessageContentCell: MessageCollectionViewCell {
 		layoutMessageTopLabel(with: attributes)
 		layoutAvatarView(with: attributes)
 		layoutAccessoryView(with: attributes)
-		layoutReplyMessageView(with: attributes)
+		layoutSupplementalMessageInfoView(with: attributes)
 	}
 	
 	/// Used to configure the cell.
@@ -159,7 +159,7 @@ open class MessageContentCell: MessageCollectionViewCell {
 		
 		displayDelegate.configureAccessoryView(accessoryView, for: message, at: indexPath, in: messagesCollectionView)
 		
-		replyMessageView.backgroundColor = messageColor
+		supplementalMessageInfoView.backgroundColor = messageColor
 		messageContainerView.backgroundColor = messageColor
 		messageContainerView.style = messageStyle
 		
@@ -174,10 +174,10 @@ open class MessageContentCell: MessageCollectionViewCell {
 		messageBottomLabel.attributedText = bottomMessageLabelText
 		
 		let replyMessageIndicatorColor = displayDelegate.replyMessageIndicatorColor(for: message, at: indexPath, in: messagesCollectionView)
-
-		replyMessageView.indicator.backgroundColor = replyMessageIndicatorColor
-		replyMessageView.title.attributedText = message.replyMessageTitle
-		replyMessageView.desc.attributedText = message.replyMessageDescription
+		
+		supplementalMessageInfoView.indicator.backgroundColor = replyMessageIndicatorColor
+		supplementalMessageInfoView.title.attributedText = message.supplementalMessageTitle
+		supplementalMessageInfoView.desc.attributedText = message.supplementalMessageDescription
 	}
 	
 	/// Handle tap gesture on contentView and its subviews.
@@ -186,15 +186,15 @@ open class MessageContentCell: MessageCollectionViewCell {
 		
 		switch true {
 			case messageContainerView.frame.contains(touchLocation) && !cellContentView(canHandle: convert(touchLocation, to: messageContainerView)):
-				var replyMessageViewFrame = replyMessageView.frame
+				var replyMessageViewFrame = supplementalMessageInfoView.frame
 				replyMessageViewFrame.origin.x += messageContainerView.frame.origin.x
 				replyMessageViewFrame.origin.y += messageContainerView.frame.origin.y
 				if replyMessageViewFrame.contains(touchLocation) {
 					delegate?.didTapReply(in: self)
 				} else {
 					delegate?.didTapMessage(in: self)
-			}
-			
+				}
+				
 			case avatarView.frame.contains(touchLocation):
 				delegate?.didTapAvatar(in: self)
 			case cellTopLabel.frame.contains(touchLocation):
@@ -237,28 +237,28 @@ open class MessageContentCell: MessageCollectionViewCell {
 		}
 		
 		guard gesture.state == .ended
-			|| gesture.state == .cancelled
-			|| gesture.state == .failed else { return }
+				|| gesture.state == .cancelled
+				|| gesture.state == .failed else { return }
 		
 		UIView.animate(withDuration: 0.25,
 					   delay: 0,
 					   options: .curveEaseOut,
 					   animations:
-			{
-				self.frame = .init(self.initialXOrigin,
-								   self.frame.origin.y,
-								   self.frame.size.width,
-								   self.frame.size.height)
-		}, completion: { _ in
-			self.triggeredHaptic = false
-			self.initialXOrigin = 0
-			
-			if x > self.frame.size.width * 0.25 {
-				self.delegate?.didSwipeRight(in: self)
-			} else if x < -self.frame.size.width / 2 {
-				self.delegate?.didSwipeLeft(in: self)
-			}
-		})
+						{
+							self.frame = .init(self.initialXOrigin,
+											   self.frame.origin.y,
+											   self.frame.size.width,
+											   self.frame.size.height)
+						}, completion: { _ in
+							self.triggeredHaptic = false
+							self.initialXOrigin = 0
+							
+							if x > self.frame.size.width * 0.25 {
+								self.delegate?.didSwipeRight(in: self)
+							} else if x < -self.frame.size.width / 2 {
+								self.delegate?.didSwipeLeft(in: self)
+							}
+						})
 	}
 	/// Handle long press gesture, return true when gestureRecognizer's touch point in `messageContainerView`'s frame
 	open override func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
@@ -307,27 +307,27 @@ open class MessageContentCell: MessageCollectionViewCell {
 		avatarView.frame = CGRect(origin: origin, size: attributes.avatarSize)
 	}
 	
-	open func layoutReplyMessageView(with attributes: MessagesCollectionViewLayoutAttributes) {
-		replyMessageView.frame = CGRect(origin: .zero,
-										size: .init(width: max(attributes.replyMessageViewSize.width, attributes.messageContainerSize.width),
-																   height: attributes.replyMessageViewSize.height))
+	open func layoutSupplementalMessageInfoView(with attributes: MessagesCollectionViewLayoutAttributes) {
+		supplementalMessageInfoView.frame = CGRect(origin: .zero,
+												   size: .init(width: max(attributes.replyMessageViewSize.width, attributes.messageContainerSize.width),
+															   height: attributes.replyMessageViewSize.height))
 		
-		replyMessageView.indicator.frame = CGRect(origin: .init(x: 0 + attributes.replyMessageInsets.left,
-																y: 0 + attributes.replyMessageInsets.top),
-													   size: .init(width: attributes.replyMessageIndicatorWidth,
-																   height: attributes.replyMessageViewSize.height -
-																	attributes.replyMessageInsets.vertical))
+		supplementalMessageInfoView.indicator.frame = CGRect(origin: .init(x: 0 + attributes.replyMessageInsets.left,
+																		   y: 0 + attributes.replyMessageInsets.top),
+															 size: .init(width: attributes.replyMessageIndicatorWidth,
+																		 height: attributes.replyMessageViewSize.height -
+																			attributes.replyMessageInsets.vertical))
 		
-		replyMessageView.title.frame = .init(attributes.replyMessageIndicatorWidth
-			+ attributes.replyMessageDistanceToIndicator
-			+ attributes.replyMessageInsets.left,
-											 attributes.replyMessagePadding
-												+ attributes.replyMessageInsets.top,
-											 attributes.replyMessageViewSize.width
-												- attributes.replyMessageIndicatorWidth
-												- attributes.replyMessageDistanceToIndicator
-												- attributes.replyMessageInsets.horizontal,
-											 attributes.replyMessageTitleHeight)
+		supplementalMessageInfoView.title.frame = .init(attributes.replyMessageIndicatorWidth
+															+ attributes.replyMessageDistanceToIndicator
+															+ attributes.replyMessageInsets.left,
+														attributes.replyMessagePadding
+															+ attributes.replyMessageInsets.top,
+														attributes.replyMessageViewSize.width
+															- attributes.replyMessageIndicatorWidth
+															- attributes.replyMessageDistanceToIndicator
+															- attributes.replyMessageInsets.horizontal,
+														attributes.replyMessageTitleHeight)
 		
 		var descOrigin: CGPoint = .zero
 		
@@ -340,11 +340,11 @@ open class MessageContentCell: MessageCollectionViewCell {
 			- attributes.replyMessageInsets.bottom
 			- attributes.replyMessageDescHeight
 		
-		replyMessageView.desc.frame = CGRect(origin: descOrigin, size: .init(width: attributes.replyMessageViewSize.width
-			- attributes.replyMessageIndicatorWidth
-			- attributes.replyMessageDistanceToIndicator
-			- attributes.replyMessageInsets.horizontal,
-																			 height: attributes.replyMessageDescHeight))
+		supplementalMessageInfoView.desc.frame = CGRect(origin: descOrigin, size: .init(width: attributes.replyMessageViewSize.width
+																							- attributes.replyMessageIndicatorWidth
+																							- attributes.replyMessageDistanceToIndicator
+																							- attributes.replyMessageInsets.horizontal,
+																						height: attributes.replyMessageDescHeight))
 	}
 	
 	/// Positions the cell's `MessageContainerView`.
@@ -361,14 +361,14 @@ open class MessageContentCell: MessageCollectionViewCell {
 					origin.y = (attributes.size.height / 2) - (messageHeight / 2)
 				} else {
 					fallthrough
-			}
+				}
 			default:
 				if attributes.accessoryViewSize.height > attributes.messageContainerSize.height {
 					let messageHeight = attributes.messageContainerSize.height + attributes.messageContainerPadding.vertical
 					origin.y = (attributes.size.height / 2) - (messageHeight / 2)
 				} else {
 					origin.y = attributes.cellTopLabelSize.height + attributes.messageTopLabelSize.height + attributes.messageContainerPadding.top
-			}
+				}
 		}
 		
 		let avatarPadding = attributes.avatarLeadingTrailingPadding

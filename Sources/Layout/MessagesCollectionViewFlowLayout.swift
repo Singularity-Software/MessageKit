@@ -315,6 +315,14 @@ open class MessagesCollectionViewFlowLayout: UICollectionViewFlowLayout {
 		messageSizeCalculators().forEach { $0.outgoingAccessoryViewPosition = newPosition }
 	}
 	
+	public func setSupplementalIndicatorWidth(_ width: CGFloat) {
+		messageSizeCalculators().forEach { $0.supplementalIndicatorWidth = width }
+	}
+	
+	public func setSupplementalIndicatorDistanceToMessage(_ distance: CGFloat) {
+		messageSizeCalculators().forEach { $0.supplementalIndicatorDistanceToMessage = distance }
+	}
+
 	/// Get all `MessageSizeCalculator`s
 	open func messageSizeCalculators() -> [MessageSizeCalculator] {
 		return [textMessageSizeCalculator,
