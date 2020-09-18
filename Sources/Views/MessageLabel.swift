@@ -455,6 +455,10 @@ open class MessageLabel: UILabel {
 
         guard let index = stringIndex(at: touchLocation) else { return false }
 
+		if delegate?.didTapOnRange(index) == true {
+			return true
+		}
+	
         for (detectorType, ranges) in rangesForDetectors {
             for (range, value) in ranges {
                 if range.contains(index) {

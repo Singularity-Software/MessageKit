@@ -75,7 +75,12 @@ public protocol MessageLabelDelegate: AnyObject {
     ///   - pattern: the pattern of the regular expression
     ///   - match: part that match with the regular expression
     func didSelectCustom(_ pattern: String, match: String?)
-
+	
+	/// Triggered when a tap occurs on any part of the text
+	///
+	/// - Parameters:
+	///   - range: the location of where the tap occurs on the text
+	func didTapOnRange(_ range: Int) -> Bool
 }
 
 public extension MessageLabelDelegate {
@@ -95,5 +100,9 @@ public extension MessageLabelDelegate {
     func didSelectHashtag(_ hashtag: String) {}
 
     func didSelectCustom(_ pattern: String, match: String?) {}
+	
+	func didTapOnRange(_ range: Int) -> Bool {
+		return false
+	}
 
 }
