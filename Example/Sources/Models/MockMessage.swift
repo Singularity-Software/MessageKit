@@ -103,9 +103,11 @@ struct MockContactItem: ContactItem {
 
 internal struct MockMessage: MessageType {
 	
+	var forwardedMessageIndicator: NSAttributedString?
+	
 	var supplementalMessageTitle: NSAttributedString?
 	
-	var replyMessageDescription: NSAttributedString?
+	var supplementalMessageDescription: NSAttributedString?
 
     var messageId: String
     var sender: SenderType {
@@ -123,7 +125,7 @@ internal struct MockMessage: MessageType {
         self.messageId = messageId
         self.sentDate = date
 		self.supplementalMessageTitle = replyTitle
-		self.replyMessageDescription = replyDesc
+		self.supplementalMessageDescription = replyDesc
     }
     
 	init(text: String, user: MockUser, messageId: String, date: Date, replyTitle: NSAttributedString? = nil,

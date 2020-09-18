@@ -37,8 +37,12 @@ open class MediaMessageSizeCalculator: MessageSizeCalculator {
 													forContainerSize: CGSize(width: maxWidth, height: height))
 			}
 			
-			return self.includeReplyMessageSize(for: message,
-												forContainerSize: item.size)
+			var finalSize = self.includeReplyMessageSize(for: message,
+													forContainerSize: item.size)
+			
+			finalSize = self.includeForwardedMessageSize(for: message, forContainerSize: finalSize)
+			
+			return finalSize
 		}
 		
 		switch message.kind {

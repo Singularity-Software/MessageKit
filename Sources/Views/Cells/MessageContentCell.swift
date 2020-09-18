@@ -30,6 +30,13 @@ open class MessageContentCell: MessageCollectionViewCell {
 	/// The image view displaying the avatar.
 	open var avatarView = AvatarView()
 	
+	open var forwardedMessageIndicator: InsetLabel = {
+		let label = InsetLabel()
+		label.numberOfLines = 1
+		label.textAlignment = .left
+		return label
+	}()
+	
 	/// The container used for holding messages that is being replied
 	open var supplementalMessageInfoView = SupplementalMessageInfoView()
 	
@@ -110,6 +117,7 @@ open class MessageContentCell: MessageCollectionViewCell {
 		contentView.addSubview(messageContainerView)
 		contentView.addSubview(avatarView)
 		messageContainerView.addSubview(supplementalMessageInfoView)
+		messageContainerView.addSubview(forwardedMessageIndicator)
 	}
 	
 	open override func prepareForReuse() {
@@ -134,6 +142,7 @@ open class MessageContentCell: MessageCollectionViewCell {
 		layoutAvatarView(with: attributes)
 		layoutAccessoryView(with: attributes)
 		layoutSupplementalMessageInfoView(with: attributes)
+		layoutForwardedMessageIndicator(with: attributes)
 	}
 	
 	/// Used to configure the cell.
@@ -159,6 +168,7 @@ open class MessageContentCell: MessageCollectionViewCell {
 		
 		displayDelegate.configureAccessoryView(accessoryView, for: message, at: indexPath, in: messagesCollectionView)
 		
+		forwardedMessageIndicator.backgroundColor = messageColor
 		supplementalMessageInfoView.backgroundColor = messageColor
 		messageContainerView.backgroundColor = messageColor
 		messageContainerView.style = messageStyle
@@ -178,6 +188,7 @@ open class MessageContentCell: MessageCollectionViewCell {
 		supplementalMessageInfoView.indicator.backgroundColor = replyMessageIndicatorColor
 		supplementalMessageInfoView.title.attributedText = message.supplementalMessageTitle
 		supplementalMessageInfoView.desc.attributedText = message.supplementalMessageDescription
+		forwardedMessageIndicator.attributedText = message.forwardedMessageIndicator
 	}
 	
 	/// Handle tap gesture on contentView and its subviews.
@@ -189,8 +200,15 @@ open class MessageContentCell: MessageCollectionViewCell {
 				var replyMessageViewFrame = supplementalMessageInfoView.frame
 				replyMessageViewFrame.origin.x += messageContainerView.frame.origin.x
 				replyMessageViewFrame.origin.y += messageContainerView.frame.origin.y
+				
+				var forwardedIndicatorViewFrame = forwardedMessageIndicator.frame
+				forwardedIndicatorViewFrame.origin.x += messageContainerView.frame.origin.x
+				forwardedIndicatorViewFrame.origin.y += messageContainerView.frame.origin.y
+				
 				if replyMessageViewFrame.contains(touchLocation) {
 					delegate?.didTapReply(in: self)
+				} else if forwardedIndicatorViewFrame.contains(touchLocation) {
+					delegate?.didTapForwardedIndicator(in: self)
 				} else {
 					delegate?.didTapMessage(in: self)
 				}
@@ -345,6 +363,18 @@ open class MessageContentCell: MessageCollectionViewCell {
 																							- attributes.replyMessageDistanceToIndicator
 																							- attributes.replyMessageInsets.horizontal,
 																						height: attributes.replyMessageDescHeight))
+	}
+	
+	open func layoutForwardedMessageIndicator(with attributes: MessagesCollectionViewLayoutAttributes) {
+		forwardedMessageIndicator.frame = CGRect(origin: .init(x: 0,
+																y: 0),
+												  size: .init(width: max(attributes.forwardedMessageIndicatorSize.width,
+																		 attributes.messageContainerSize.width),
+															  height: attributes.forwardedMessageIndicatorSize.height))
+		
+		forwardedMessageIndicator.textInsets = attributes.forwardedMessageIndicatorAlignment.textInsets
+		forwardedMessageIndicator.textAlignment = attributes.forwardedMessageIndicatorAlignment.textAlignment
+		
 	}
 	
 	/// Positions the cell's `MessageContainerView`.

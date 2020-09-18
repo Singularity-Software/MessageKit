@@ -43,6 +43,9 @@ public protocol MessageType {
     /// The description of the message that is being replied
     var supplementalMessageDescription: NSAttributedString? { get }
     
+	/// The message to indicate this message was forwarded
+	var forwardedMessageIndicator: NSAttributedString? { get }
+	
     /// The kind of message and its underlying kind.
     var kind: MessageKind { get }
 

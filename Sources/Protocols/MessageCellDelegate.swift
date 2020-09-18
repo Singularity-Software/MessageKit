@@ -38,6 +38,17 @@ public protocol MessageCellDelegate: MessageLabelDelegate {
     /// method `messageForItem(at:indexPath:messagesCollectionView)`.
     func didTapBackground(in cell: MessageCollectionViewCell)
 
+	/// Triggered when a tap occurs in the `forwardedMessageIndicator`.
+	///
+	/// - Parameters:
+	///   - cell: The cell where the tap occurred.
+	///
+	/// - Note:
+	/// You can get a reference to the `MessageType` for the cell by using `UICollectionView`'s
+	/// `indexPath(for: cell)` method. Then using the returned `IndexPath` with the `MessagesDataSource`
+	/// method `messageForItem(at:indexPath:messagesCollectionView)`.
+	func didTapForwardedIndicator(in cell: MessageCollectionViewCell)
+	
 	/// Triggered when a tap occurs in the `ReplyMessageView`.
 	///
 	/// - Parameters:
@@ -225,4 +236,5 @@ public extension MessageCellDelegate {
     
     func didTapAccessoryView(in cell: MessageCollectionViewCell) {}
 
+	func didTapForwardedIndicator(in cell: MessageCollectionViewCell) {}
 }

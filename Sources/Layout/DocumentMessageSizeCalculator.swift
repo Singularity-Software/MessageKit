@@ -44,8 +44,12 @@ open class DocumentMessageSizeCalculator: MessageSizeCalculator {
         messageContainerSize.height += fileContainerSize.height
         messageContainerSize.height += 4
         
-        return includeReplyMessageSize(for: message,
-                                       forContainerSize: messageContainerSize)
+		var finalSize = includeReplyMessageSize(for: message,
+												forContainerSize: messageContainerSize)
+		
+		finalSize = includeForwardedMessageSize(for: message, forContainerSize: finalSize)
+		
+		return finalSize
         
     }
     

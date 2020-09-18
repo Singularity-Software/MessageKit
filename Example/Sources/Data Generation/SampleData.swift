@@ -163,15 +163,19 @@ final internal class SampleData {
 		
 		switch randomMessageType() {
 			case .Text:
-				let randomInt = Int.random(in: 1 ... 2)
+				let randomInt = Int.random(in: 1 ... 3)
 				let randomSentence = Lorem.sentence()
 				if randomInt == 2 {
 					let replyTitle = Lorem.word()
 					let replySentence = Lorem.sentence()
 					return MockMessage(text: randomSentence, user: user, messageId: uniqueID, date: date, replyTitle: attributedString(with: replyTitle), replyDesc: attributedString(with: replySentence))
+				} else if randomInt == 1 {
+					var message = MockMessage(text: randomSentence, user: user, messageId: uniqueID, date: date)
+					message.forwardedMessageIndicator = attributedString(with: "From: @rahim")
+					return message
 				} else {
 					return MockMessage(text: randomSentence, user: user, messageId: uniqueID, date: date)
-			}
+				}
 			
 			case .Document:
 				return MockMessage(documentUrl: URL(string: "https://github.com/MessageKit")!, user: user, messageId: uniqueID, date: date)
@@ -179,7 +183,10 @@ final internal class SampleData {
 			case .AttributedText:
 				let randomSentence = Lorem.sentence()
 				let attributedText = attributedString(with: randomSentence)
-				return MockMessage(attributedText: attributedText, user: user, messageId: uniqueID, date: date)
+				var message = MockMessage(attributedText: attributedText, user: user, messageId: uniqueID, date: date)
+				message.forwardedMessageIndicator = attributedString(with: "From: @rahim")
+				return message
+//				return MockMessage(attributedText: attributedText, user: user, messageId: uniqueID, date: date)
 			case .Photo:
 				let randomNumberImage = Int(arc4random_uniform(UInt32(messageImages.count)))
 				let image = messageImages[randomNumberImage]

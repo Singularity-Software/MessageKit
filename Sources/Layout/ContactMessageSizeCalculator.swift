@@ -61,8 +61,12 @@ open class ContactMessageSizeCalculator: MessageSizeCalculator {
         messageContainerSize.width += messageInsets.horizontal
         messageContainerSize.height += messageInsets.vertical
         
-		return includeReplyMessageSize(for: message,
-									   forContainerSize: messageContainerSize)
+		var finalSize = includeReplyMessageSize(for: message,
+												forContainerSize: messageContainerSize)
+		
+		finalSize = includeForwardedMessageSize(for: message, forContainerSize: finalSize)
+		
+		return finalSize
 		
     }
     

@@ -32,6 +32,9 @@ open class MessageSizeCalculator: CellSizeCalculator {
         self.layout = layout
     }
 
+	public var forwardedMessageIndicatorAlignment = LabelAlignment(textAlignment: .left, textInsets: UIEdgeInsets(top: 7, left: 14, bottom: 0, right: 14))
+	public var forwardedMessageIndicatorSize = CGSize.zero
+	
 	public var supplementalMessagePadding: CGFloat = 2
 	public var supplementalIndicatorWidth: CGFloat = 5
 	public var supplementalIndicatorDistanceToMessage: CGFloat = 4
@@ -76,6 +79,9 @@ open class MessageSizeCalculator: CellSizeCalculator {
         let indexPath = attributes.indexPath
         let message = dataSource.messageForItem(at: indexPath, in: messagesLayout.messagesCollectionView)
 		let replySize = supplementalMessageViewSize(for: message)
+		
+		attributes.forwardedMessageIndicatorSize = forwardedMessageIndicatorViewSize(for: message)
+		attributes.forwardedMessageIndicatorAlignment = forwardedMessageIndicatorAlignment
 		
 		attributes.replyMessageViewSize = replySize.2
 		attributes.replyMessagePadding = supplementalMessagePadding
@@ -261,6 +267,28 @@ open class MessageSizeCalculator: CellSizeCalculator {
         return isFromCurrentSender ? outgoingAccessoryViewPosition : incomingAccessoryViewPosition
     }
 	
+	// MARK: - ForwardedMessageIndicator
+	open func forwardedMessageIndicatorViewSize(for message: MessageType) -> CGSize {
+		guard let forwardedMessage = message.forwardedMessageIndicator else {
+			return .zero
+		}
+		
+		var forwardedMessageViewSize: CGSize = .zero
+		let maxWidth = messageContainerMaxWidth(for: message)
+		
+		if let font = forwardedMessage.attribute(.font, at: 0, effectiveRange: nil) as? UIFont {
+			forwardedMessageViewSize = labelSize(for: forwardedMessage, considering: maxWidth, height: font.lineHeight)
+		} else {
+			return .zero
+		}
+		
+		let messageInsets = forwardedMessageIndicatorAlignment.textInsets
+		forwardedMessageViewSize.width += messageInsets.horizontal
+		forwardedMessageViewSize.height += messageInsets.vertical
+		
+		return forwardedMessageViewSize
+	}
+	
 	// MARK: - ReplyMessageView
 	
 	open func supplementalMessageViewSize(for message: MessageType) -> (CGFloat, CGFloat, CGSize) {
@@ -348,6 +376,13 @@ open class MessageSizeCalculator: CellSizeCalculator {
 
 		return .init(width: max(containerSize.width, replySize.2.width),
 					 height: containerSize.height + replySize.2.height)
+	}
+	
+	internal func includeForwardedMessageSize(for message: MessageType, forContainerSize containerSize: CGSize) -> CGSize {
+		let forwardedMessageSize = forwardedMessageIndicatorViewSize(for: message)
+		
+		return .init(width: max(containerSize.width, forwardedMessageSize.width),
+					 height: containerSize.height + forwardedMessageSize.height)
 	}
 }
 

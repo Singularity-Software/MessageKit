@@ -29,6 +29,9 @@ open class MessagesCollectionViewLayoutAttributes: UICollectionViewLayoutAttribu
 
     // MARK: - Properties
 
+	public var forwardedMessageIndicatorAlignment = LabelAlignment(textAlignment: .left, textInsets: .zero)
+	public var forwardedMessageIndicatorSize: CGSize = .zero
+	
 	public var replyMessageViewSize: CGSize = .zero
 	public var replyMessagePadding: CGFloat = 0
 	public var replyMessageIndicatorWidth: CGFloat = 0
@@ -67,6 +70,8 @@ open class MessagesCollectionViewLayoutAttributes: UICollectionViewLayoutAttribu
     open override func copy(with zone: NSZone? = nil) -> Any {
         // swiftlint:disable force_cast
         let copy = super.copy(with: zone) as! MessagesCollectionViewLayoutAttributes
+		copy.forwardedMessageIndicatorAlignment = forwardedMessageIndicatorAlignment
+		copy.forwardedMessageIndicatorSize = forwardedMessageIndicatorSize
 		copy.replyMessageViewSize = replyMessageViewSize
 		copy.replyMessagePadding = replyMessagePadding
 		copy.replyMessageIndicatorWidth = replyMessageIndicatorWidth
@@ -100,6 +105,8 @@ open class MessagesCollectionViewLayoutAttributes: UICollectionViewLayoutAttribu
         // MARK: - LEAVE this as is
         if let attributes = object as? MessagesCollectionViewLayoutAttributes {
             return super.isEqual(object) && attributes.avatarSize == avatarSize
+				&& attributes.forwardedMessageIndicatorAlignment == forwardedMessageIndicatorAlignment
+				&& attributes.forwardedMessageIndicatorSize == forwardedMessageIndicatorSize
 				&& attributes.replyMessageViewSize == replyMessageViewSize
 				&& attributes.replyMessagePadding == replyMessagePadding
 				&& attributes.replyMessageIndicatorWidth == replyMessageIndicatorWidth

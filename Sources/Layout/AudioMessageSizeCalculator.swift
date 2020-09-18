@@ -38,8 +38,12 @@ open class AudioMessageSizeCalculator: MessageSizeCalculator {
 											   forContainerSize: CGSize(width: maxWidth, height: height))
             }
 	
-			return includeReplyMessageSize(for: message,
-										   forContainerSize: item.size)
+			var finalSize = includeReplyMessageSize(for: message,
+													forContainerSize: item.size)
+			
+			finalSize = includeForwardedMessageSize(for: message, forContainerSize: finalSize)
+			
+			return finalSize
 			
         default:
             fatalError("messageContainerSize received unhandled MessageDataType: \(message.kind)")
