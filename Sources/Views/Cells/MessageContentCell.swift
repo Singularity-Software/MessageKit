@@ -78,6 +78,13 @@ open class MessageContentCell: MessageCollectionViewCell {
 		return label
 	}()
 	
+	/// The indicator to highlight the message
+	open var indicator: UIView = {
+		let view = UIView()
+		view.backgroundColor = .clear
+		return view
+	}()
+	
 	@available(iOS 10.0, *)
 	open lazy var hapticGenerator: UINotificationFeedbackGenerator = {
 		let notificationFeedbackGenerator = UINotificationFeedbackGenerator()
@@ -116,6 +123,7 @@ open class MessageContentCell: MessageCollectionViewCell {
 		contentView.addSubview(cellBottomLabel)
 		contentView.addSubview(messageContainerView)
 		contentView.addSubview(avatarView)
+		contentView.addSubview(indicator)
 		messageContainerView.addSubview(supplementalMessageInfoView)
 		messageContainerView.addSubview(forwardedMessageIndicator)
 	}
@@ -143,6 +151,7 @@ open class MessageContentCell: MessageCollectionViewCell {
 		layoutAccessoryView(with: attributes)
 		layoutSupplementalMessageInfoView(with: attributes)
 		layoutForwardedMessageIndicator(with: attributes)
+		layoutIndicator()
 	}
 	
 	/// Used to configure the cell.
@@ -168,6 +177,7 @@ open class MessageContentCell: MessageCollectionViewCell {
 		
 		displayDelegate.configureAccessoryView(accessoryView, for: message, at: indexPath, in: messagesCollectionView)
 		
+		indicator.backgroundColor = displayDelegate.cellIndicatorColor(for: message, at: indexPath, in: messagesCollectionView)
 		forwardedMessageIndicator.backgroundColor = messageColor
 		supplementalMessageInfoView.backgroundColor = messageColor
 		messageContainerView.backgroundColor = messageColor
@@ -375,6 +385,13 @@ open class MessageContentCell: MessageCollectionViewCell {
 		forwardedMessageIndicator.textInsets = attributes.forwardedMessageIndicatorAlignment.textInsets
 		forwardedMessageIndicator.textAlignment = attributes.forwardedMessageIndicatorAlignment.textAlignment
 		
+	}
+	
+	open func layoutIndicator() {
+		indicator.frame = CGRect(x: 0,
+								 y: messageTopLabel.frame.minY,
+								 width: CGFloat(5) / UIScreen.main.scale,
+								 height: messageBottomLabel.frame.minY - messageTopLabel.frame.minY)
 	}
 	
 	/// Positions the cell's `MessageContainerView`.

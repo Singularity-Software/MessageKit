@@ -38,6 +38,18 @@ public protocol MessagesDisplayDelegate: AnyObject {
 	///   - messagesCollectionView: The `MessagesCollectionView` in which this cell will be displayed.
 	///
 	/// - Note:
+	///   The default value returned by this method is: UIColor.clear
+	///
+	func cellIndicatorColor(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> UIColor
+	
+	/// Specifies the color of the indicator in a reply message.
+	///
+	/// - Parameters:
+	///   - message: A `MessageType` with a `MessageKind` case of `.text` to which the color will apply.
+	///   - indexPath: The `IndexPath` of the cell.
+	///   - messagesCollectionView: The `MessagesCollectionView` in which this cell will be displayed.
+	///
+	/// - Note:
 	///   The default value returned by this method is determined by the messages `SenderType`.
 	///
 	///   Current sender: UIColor.white
@@ -259,7 +271,10 @@ public protocol MessagesDisplayDelegate: AnyObject {
 public extension MessagesDisplayDelegate {
 
     // MARK: - All Messages Defaults
-
+	func cellIndicatorColor(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> UIColor {
+		return .clear
+	}
+	
 	func replyMessageIndicatorColor(for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) -> UIColor {
 		guard let dataSource = messagesCollectionView.messagesDataSource else {
 			fatalError(MessageKitError.nilMessagesDataSource)
