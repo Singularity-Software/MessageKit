@@ -382,7 +382,7 @@ open class MessageContentCell: MessageCollectionViewCell {
 	open func layoutIndicator() {
 		indicator.frame = CGRect(x: 0,
 								 y: messageTopLabel.frame.minY,
-								 width: CGFloat(5),
+								 width: CGFloat(5) / UIScreen.main.scale,
 								 height: messageBottomLabel.frame.minY - messageTopLabel.frame.minY)
 	}
 	
