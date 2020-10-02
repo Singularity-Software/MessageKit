@@ -55,7 +55,6 @@ open class MediaMessageCell: MessageContentCell {
 	
 	/// Responsible for setting up the constraints of the cell's subviews.
 	open func setupConstraints() {
-		imageView.fillSuperview()
 		if #available(iOS 13, *) {
 			playImageView.centerInSuperview()
 			playImageView.constraint(equalTo: CGSize(width: 35, height: 35))
@@ -67,13 +66,24 @@ open class MediaMessageCell: MessageContentCell {
 	
 	open override func setupSubviews() {
 		super.setupSubviews()
-		messageContainerView.addSubview(imageView)
+		messageContainerView.insertSubview(imageView, at: 0)
 		if #available(iOS 13, *) {
 			messageContainerView.addSubview(playImageView)
 		} else {
 			messageContainerView.addSubview(playButtonView)
 		}
 		setupConstraints()
+	}
+	
+	open override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
+		super.apply(layoutAttributes)
+		var height = max(forwardedMessageIndicator.frame.height,
+						 supplementalMessageInfoView.frame.height)
+		height = (height == 0) ? 0 : (height + 7)
+		imageView.frame = .init(x: 0,
+								y: height,
+								width: messageContainerView.frame.width,
+								height: messageContainerView.frame.height - height)
 	}
 	
 	open override func prepareForReuse() {

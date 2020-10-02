@@ -190,7 +190,13 @@ final internal class SampleData {
 			case .Photo:
 				let randomNumberImage = Int(arc4random_uniform(UInt32(messageImages.count)))
 				let image = messageImages[randomNumberImage]
-				return MockMessage(image: image, user: user, messageId: uniqueID, date: date)
+				var message = MockMessage(image: image, user: user, messageId: uniqueID, date: date)
+				message.supplementalMessageTitle = attributedString(with: "From: @rahim")
+				message.supplementalMessageDescription = attributedString(with: "dsfdfsdfsdm")
+//				message.forwardedMessageIndicator = attributedString(with: "From: @rahim")
+				return message
+
+//				return MockMessage(image: image, user: user, messageId: uniqueID, date: date)
 			case .Video:
 				let randomNumberImage = Int(arc4random_uniform(UInt32(messageImages.count)))
 				let image = messageImages[randomNumberImage]
