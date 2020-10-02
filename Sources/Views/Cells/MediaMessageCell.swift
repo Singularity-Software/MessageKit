@@ -68,9 +68,9 @@ open class MediaMessageCell: MessageContentCell {
 		super.setupSubviews()
 		messageContainerView.insertSubview(imageView, at: 0)
 		if #available(iOS 13, *) {
-			messageContainerView.addSubview(playImageView)
+			imageView.addSubview(playImageView)
 		} else {
-			messageContainerView.addSubview(playButtonView)
+			imageView.addSubview(playButtonView)
 		}
 		setupConstraints()
 	}

@@ -46,7 +46,8 @@ open class MessageSizeCalculator: CellSizeCalculator {
     public var incomingAvatarPosition = AvatarPosition(vertical: .cellBottom)
     public var outgoingAvatarPosition = AvatarPosition(vertical: .cellBottom)
 
-    public var avatarLeadingTrailingPadding: CGFloat = 0
+    public var avatarLeadingPadding: CGFloat = 0
+	public var avatarTrailingPadding: CGFloat = 0
 
     public var incomingMessagePadding = UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 30)
     public var outgoingMessagePadding = UIEdgeInsets(top: 0, left: 30, bottom: 0, right: 4)
@@ -93,7 +94,8 @@ open class MessageSizeCalculator: CellSizeCalculator {
 
         attributes.avatarSize = avatarSize(for: message)
         attributes.avatarPosition = avatarPosition(for: message)
-        attributes.avatarLeadingTrailingPadding = avatarLeadingTrailingPadding
+        attributes.avatarLeadingPadding = avatarLeadingPadding
+		attributes.avatarTrailingPadding = avatarTrailingPadding
 
         attributes.messageContainerPadding = messageContainerPadding(for: message)
         attributes.messageContainerSize = messageContainerSize(for: message)
@@ -348,11 +350,13 @@ open class MessageSizeCalculator: CellSizeCalculator {
     }
 
     open func messageContainerMaxWidth(for message: MessageType) -> CGFloat {
+		let dataSource = messagesLayout.messagesDataSource
+		let isFromCurrentSender = dataSource.isFromCurrentSender(message: message)
         let avatarWidth = avatarSize(for: message).width
         let messagePadding = messageContainerPadding(for: message)
         let accessoryWidth = accessoryViewSize(for: message).width
         let accessoryPadding = accessoryViewPadding(for: message)
-        return messagesLayout.itemWidth - avatarWidth - messagePadding.horizontal - accessoryWidth - accessoryPadding.horizontal - avatarLeadingTrailingPadding
+        return messagesLayout.itemWidth - avatarWidth - messagePadding.horizontal - accessoryWidth - accessoryPadding.horizontal - (isFromCurrentSender ? avatarTrailingPadding : avatarLeadingPadding)
     }
 
     // MARK: - Helpers

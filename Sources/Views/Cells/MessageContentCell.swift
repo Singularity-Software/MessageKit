@@ -95,8 +95,6 @@ open class MessageContentCell: MessageCollectionViewCell {
 	
 	open var triggeredHaptic = false
 	
-	open var initialXOrigin: CGFloat = 0
-	
 	// Should only add customized subviews - don't change accessoryView itself.
 	open var accessoryView: UIView = UIView()
 	
@@ -243,10 +241,6 @@ open class MessageContentCell: MessageCollectionViewCell {
 	open override func handlePanGesture(_ gesture: UIPanGestureRecognizer) {
 		let translation = gesture.translation(in: self)
 		
-		if initialXOrigin == 0 {
-			initialXOrigin = self.frame.origin.x
-		}
-		
 		self.center = .init(x: self.center.x + translation.x,
 							y: self.center.y )
 		
@@ -273,13 +267,12 @@ open class MessageContentCell: MessageCollectionViewCell {
 					   options: .curveEaseOut,
 					   animations:
 						{
-							self.frame = .init(self.initialXOrigin,
+							self.frame = .init(0,
 											   self.frame.origin.y,
 											   self.frame.size.width,
 											   self.frame.size.height)
 						}, completion: { _ in
 							self.triggeredHaptic = false
-							self.initialXOrigin = 0
 							
 							if x > self.frame.size.width * 0.25 {
 								self.delegate?.didSwipeRight(in: self)
@@ -306,13 +299,12 @@ open class MessageContentCell: MessageCollectionViewCell {
 	/// - attributes: The `MessagesCollectionViewLayoutAttributes` for the cell.
 	open func layoutAvatarView(with attributes: MessagesCollectionViewLayoutAttributes) {
 		var origin: CGPoint = .zero
-		let padding = attributes.avatarLeadingTrailingPadding
 		
 		switch attributes.avatarPosition.horizontal {
 			case .cellLeading:
-				origin.x = padding
+				origin.x = attributes.avatarLeadingPadding
 			case .cellTrailing:
-				origin.x = attributes.frame.width - attributes.avatarSize.width - padding
+				origin.x = attributes.frame.width - attributes.avatarSize.width - attributes.avatarTrailingPadding
 			case .natural:
 				fatalError(MessageKitError.avatarPositionUnresolved)
 		}
@@ -390,7 +382,7 @@ open class MessageContentCell: MessageCollectionViewCell {
 	open func layoutIndicator() {
 		indicator.frame = CGRect(x: 0,
 								 y: messageTopLabel.frame.minY,
-								 width: CGFloat(5) / UIScreen.main.scale,
+								 width: CGFloat(5),
 								 height: messageBottomLabel.frame.minY - messageTopLabel.frame.minY)
 	}
 	
@@ -418,12 +410,11 @@ open class MessageContentCell: MessageCollectionViewCell {
 				}
 		}
 		
-		let avatarPadding = attributes.avatarLeadingTrailingPadding
 		switch attributes.avatarPosition.horizontal {
 			case .cellLeading:
-				origin.x = attributes.avatarSize.width + attributes.messageContainerPadding.left + avatarPadding
+				origin.x = attributes.avatarSize.width + attributes.messageContainerPadding.left + attributes.avatarLeadingPadding
 			case .cellTrailing:
-				origin.x = attributes.frame.width - attributes.avatarSize.width - attributes.messageContainerSize.width - attributes.messageContainerPadding.right - avatarPadding
+				origin.x = attributes.frame.width - attributes.avatarSize.width - attributes.messageContainerSize.width - attributes.messageContainerPadding.right - attributes.avatarTrailingPadding
 			case .natural:
 				fatalError(MessageKitError.avatarPositionUnresolved)
 		}

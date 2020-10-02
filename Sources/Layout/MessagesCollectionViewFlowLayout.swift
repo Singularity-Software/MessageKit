@@ -231,8 +231,13 @@ open class MessagesCollectionViewFlowLayout: UICollectionViewFlowLayout {
 	}
 	
 	/// Set `avatarLeadingTrailingPadding` of all `MessageSizeCalculator`s
-	public func setAvatarLeadingTrailingPadding(_ newPadding: CGFloat) {
-		messageSizeCalculators().forEach { $0.avatarLeadingTrailingPadding = newPadding }
+	public func setAvatarLeadingPadding(_ newPadding: CGFloat) {
+		messageSizeCalculators().forEach { $0.avatarLeadingPadding = newPadding }
+	}
+	
+	/// Set `avatarLeadingTrailingPadding` of all `MessageSizeCalculator`s
+	public func setAvatarTrailingPadding(_ newPadding: CGFloat) {
+		messageSizeCalculators().forEach { $0.avatarTrailingPadding = newPadding }
 	}
 	
 	/// Set `incomingMessagePadding` of all `MessageSizeCalculator`s

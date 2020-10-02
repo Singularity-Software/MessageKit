@@ -42,8 +42,9 @@ open class MessagesCollectionViewLayoutAttributes: UICollectionViewLayoutAttribu
 
     public var avatarSize: CGSize = .zero
     public var avatarPosition = AvatarPosition(vertical: .cellBottom)
-    public var avatarLeadingTrailingPadding: CGFloat = 0
-
+	public var avatarLeadingPadding: CGFloat = 0
+	public var avatarTrailingPadding: CGFloat = 0
+	
     public var messageContainerSize: CGSize = .zero
     public var messageContainerPadding: UIEdgeInsets = .zero
     public var messageLabelFont: UIFont = UIFont.preferredFont(forTextStyle: .body)
@@ -81,7 +82,8 @@ open class MessagesCollectionViewLayoutAttributes: UICollectionViewLayoutAttribu
 		copy.replyMessageInsets = replyMessageInsets
         copy.avatarSize = avatarSize
         copy.avatarPosition = avatarPosition
-        copy.avatarLeadingTrailingPadding = avatarLeadingTrailingPadding
+        copy.avatarLeadingPadding = avatarLeadingPadding
+		copy.avatarTrailingPadding = avatarTrailingPadding
         copy.messageContainerSize = messageContainerSize
         copy.messageContainerPadding = messageContainerPadding
         copy.messageLabelFont = messageLabelFont
@@ -115,7 +117,8 @@ open class MessagesCollectionViewLayoutAttributes: UICollectionViewLayoutAttribu
 				&& attributes.replyMessageDescHeight == replyMessageDescHeight
 				&& attributes.replyMessageInsets == replyMessageInsets
 				&& attributes.avatarPosition == avatarPosition
-				&& attributes.avatarLeadingTrailingPadding == avatarLeadingTrailingPadding
+				&& attributes.avatarLeadingPadding == avatarLeadingPadding
+				&& attributes.avatarTrailingPadding == avatarTrailingPadding
                 && attributes.messageContainerSize == messageContainerSize
                 && attributes.messageContainerPadding == messageContainerPadding
                 && attributes.messageLabelFont == messageLabelFont
