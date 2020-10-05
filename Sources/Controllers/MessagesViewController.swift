@@ -116,12 +116,20 @@ UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     open override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         isMessagesControllerBeingDismissed = true
+		removeKeyboardObservers()
     }
     
     open override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         isMessagesControllerBeingDismissed = false
     }
+	
+	open override func viewWillAppear(_ animated: Bool) {
+		super.viewWillAppear(animated)
+		if !isFirstLayout {
+			addKeyboardObservers()
+		}
+	}
     
     open override func viewDidLayoutSubviews() {
         // Hack to prevent animation of the contentInset after viewDidAppear
@@ -143,7 +151,6 @@ UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
     // MARK: - Initializers
 
     deinit {
-        removeKeyboardObservers()
         removeMenuControllerObservers()
         removeObservers()
         clearMemoryCache()
