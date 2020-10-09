@@ -94,6 +94,17 @@ final internal class SampleData {
 						 Bundle.main.url(forResource: "sound2", withExtension: "m4a")!
 	]
 	
+	let linkItem: (() -> MockLinkItem) = {
+		MockLinkItem(
+			text: "\(Lorem.sentence()) https://github.com/MessageKit",
+			attributedText: nil,
+			url: URL(string: "https://github.com/MessageKit")!,
+			title: "MessageKit",
+			teaser: "A community-driven replacement for JSQMessagesViewController - MessageKit",
+			thumbnailImage: UIImage(named: "mkorglogo")!
+		)
+	}
+	
 	func attributedString(with text: String) -> NSAttributedString {
 		let nsString = NSString(string: text)
 		var mutableAttributedString = NSMutableAttributedString(string: text)
@@ -144,13 +155,10 @@ final internal class SampleData {
 	}
 	
 	func randomMessageType() -> MessageTypes {
-		var messageTypes = [MessageTypes]()
-		for type in MessageTypes.allCases {
-			if UserDefaults.standard.bool(forKey: "\(type.rawValue)" + " Messages") {
-				messageTypes.append(type)
-			}
-		}
-		return messageTypes.random()!
+		return MessageTypes.allCases.compactMap {
+			guard UserDefaults.standard.bool(forKey: "\($0.rawValue)" + " Messages") else { return nil }
+			return $0
+		}.random()!
 	}
 	
 	// swiftlint:disable cyclomatic_complexity
@@ -198,21 +206,17 @@ final internal class SampleData {
 
 //				return MockMessage(image: image, user: user, messageId: uniqueID, date: date)
 			case .Video:
-				let randomNumberImage = Int(arc4random_uniform(UInt32(messageImages.count)))
-				let image = messageImages[randomNumberImage]
+				let image = messageImages.random()!
 				return MockMessage(thumbnail: image, user: user, messageId: uniqueID, date: date)
 			case .Audio:
-				let randomNumberSound = Int(arc4random_uniform(UInt32(sounds.count)))
-				let soundURL = sounds[randomNumberSound]
+				let soundURL = sounds.random()!
 				return MockMessage(audioURL: soundURL, user: user, messageId: uniqueID, date: date)
 			case .Emoji:
-				let randomNumberEmoji = Int(arc4random_uniform(UInt32(emojis.count)))
-				return MockMessage(emoji: emojis[randomNumberEmoji], user: user, messageId: uniqueID, date: date)
+				return MockMessage(emoji: emojis.random()!, user: user, messageId: uniqueID, date: date)
 			case .Location:
-				let randomNumberLocation = Int(arc4random_uniform(UInt32(locations.count)))
-				return MockMessage(location: locations[randomNumberLocation], user: user, messageId: uniqueID, date: date)
+				return MockMessage(location: locations.random()!, user: user, messageId: uniqueID, date: date)
 			case .Url:
-				return MockMessage(text: "https://github.com/MessageKit", user: user, messageId: uniqueID, date: date)
+				return MockMessage(linkItem: linkItem(), user: user, messageId: uniqueID, date: date)
 			case .Phone:
 				return MockMessage(text: "123-456-7890", user: user, messageId: uniqueID, date: date)
 			case .Custom:
@@ -237,6 +241,21 @@ final internal class SampleData {
 			messages.append(message)
 		}
 		completion(messages)
+	}
+	
+	func getMessages(count: Int) -> [MockMessage] {
+		var messages: [MockMessage] = []
+		// Disable Custom Messages
+		UserDefaults.standard.set(false, forKey: "Custom Messages")
+		for _ in 0..<count {
+			let uniqueID = UUID().uuidString
+			let user = senders.random()!
+			let date = dateAddingRandomTime()
+			let randomSentence = Lorem.sentence()
+			let message = MockMessage(text: randomSentence, user: user, messageId: uniqueID, date: date)
+			messages.append(message)
+		}
+		return messages
 	}
 	
 	func getAdvancedMessages(count: Int, completion: ([MockMessage]) -> Void) {

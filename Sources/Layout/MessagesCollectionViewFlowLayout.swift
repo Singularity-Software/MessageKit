@@ -170,7 +170,8 @@ open class MessagesCollectionViewFlowLayout: UICollectionViewFlowLayout {
 	lazy open var audioMessageSizeCalculator = AudioMessageSizeCalculator(layout: self)
 	lazy open var contactMessageSizeCalculator = ContactMessageSizeCalculator(layout: self)
 	lazy open var typingIndicatorSizeCalculator = TypingCellSizeCalculator(layout: self)
-	
+	lazy open var linkPreviewMessageSizeCalculator = LinkPreviewMessageSizeCalculator(layout: self)
+
 	/// Note:
 	/// - If you override this method, remember to call MessageLayoutDelegate's
 	/// customCellSizeCalculator(for:at:in:) method for MessageKind.custom messages, if necessary
@@ -200,6 +201,8 @@ open class MessagesCollectionViewFlowLayout: UICollectionViewFlowLayout {
 				return audioMessageSizeCalculator
 			case .contact:
 				return contactMessageSizeCalculator
+			case .linkPreview:
+				return linkPreviewMessageSizeCalculator
 			case .custom:
 				return messagesLayoutDelegate.customCellSizeCalculator(for: message, at: indexPath, in: messagesCollectionView)
 		}
@@ -338,7 +341,8 @@ open class MessagesCollectionViewFlowLayout: UICollectionViewFlowLayout {
 				videoMessageSizeCalculator,
 				locationMessageSizeCalculator,
 				audioMessageSizeCalculator,
-				contactMessageSizeCalculator
+				contactMessageSizeCalculator,
+				linkPreviewMessageSizeCalculator
 		]
 	}
 	

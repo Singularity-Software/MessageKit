@@ -265,7 +265,14 @@ public protocol MessagesDisplayDelegate: AnyObject {
     ///     2. return the time as m:ss if duration is greater than 59 and lower than 3600      (e.g. 12:23    means 12 mintues and 23 seconds)
     ///     3. return the time as h:mm:ss for anything longer that 3600 seconds                (e.g. 1:19:08  means 1 hour 19 minutes and 8 seconds)
     func audioProgressTextFormat(_ duration: Float, for audioCell: AudioMessageCell, in messageCollectionView: MessagesCollectionView) -> String
-
+	
+	/// Used to configure the `UIImageView` of a `LinkPreviewMessageCell`.
+	/// - Parameters:
+	///   - imageView: The `UIImageView` of the cell.
+	///   - message: The `MessageType` that will be displayed by this cell.
+	///   - indexPath: The `IndexPath` of the cell.
+	///   - messagesCollectionView: The `MessagesCollectionView` in which this cell will be displayed.
+	func configureLinkPreviewImageView(_ imageView: UIImageView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView)
 }
 
 public extension MessagesDisplayDelegate {
@@ -388,5 +395,9 @@ public extension MessagesDisplayDelegate {
         }
         return retunValue
     }
-
+	
+	// MARK: - LinkPreview Message Defaults
+	
+	func configureLinkPreviewImageView(_ imageView: UIImageView, for message: MessageType, at indexPath: IndexPath, in messagesCollectionView: MessagesCollectionView) {
+	}
 }
