@@ -85,7 +85,6 @@ open class MessageContentCell: MessageCollectionViewCell {
 		return view
 	}()
 	
-	@available(iOS 10.0, *)
 	open lazy var hapticGenerator: UINotificationFeedbackGenerator = {
 		let notificationFeedbackGenerator = UINotificationFeedbackGenerator()
 		notificationFeedbackGenerator.prepare()
@@ -249,10 +248,8 @@ open class MessageContentCell: MessageCollectionViewCell {
 		
 		if x > self.frame.size.width * 0.25 {
 			if triggeredHaptic == false {
-				if #available(iOS 10.0, *) {
-					triggeredHaptic = true
-					hapticGenerator.notificationOccurred(.success)
-				}
+				triggeredHaptic = true
+				hapticGenerator.notificationOccurred(.success)
 			}
 		} else {
 			triggeredHaptic = false
