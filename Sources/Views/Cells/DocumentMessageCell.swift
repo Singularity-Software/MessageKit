@@ -18,9 +18,9 @@ open class DocumentMessageCell: MessageContentCell {
 			iv.image = UIImage(systemName: "doc.fill", withConfiguration: config)
         }
         
-        iv.tintColor = .labelColor
+        iv.tintColor = .label
         iv.contentMode = .center
-        iv.backgroundColor = .backgroundColor
+        iv.backgroundColor = .collectionViewBackground
         
         return iv
     }()

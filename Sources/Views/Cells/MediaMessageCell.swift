@@ -33,17 +33,6 @@ open class MediaMessageCell: MessageContentCell {
 		return playButtonView
 	}()
 	
-	@available(iOS 13.0, *)
-	open lazy var playImageView: UIImageView = {
-		let iv = UIImageView()
-		iv.contentMode = .scaleAspectFill
-		iv.clipsToBounds = true
-		iv.tintColor = .white
-		let config: UIImage.SymbolConfiguration = .init(pointSize: 35)
-		iv.image = UIImage(systemName: "play.circle.fill", withConfiguration: config)
-		return iv
-	}()
-	
 	/// The image view display the media content.
 	open var imageView: UIImageView = {
 		let imageView = UIImageView()
@@ -55,35 +44,16 @@ open class MediaMessageCell: MessageContentCell {
 	
 	/// Responsible for setting up the constraints of the cell's subviews.
 	open func setupConstraints() {
-		if #available(iOS 13, *) {
-			playImageView.centerInSuperview()
-			playImageView.constraint(equalTo: CGSize(width: 35, height: 35))
-		} else {
-			playButtonView.centerInSuperview()
-			playButtonView.constraint(equalTo: CGSize(width: 35, height: 35))
-		}
+		imageView.fillSuperview()
+		playButtonView.centerInSuperview()
+		playButtonView.constraint(equalTo: CGSize(width: 35, height: 35))
 	}
 	
 	open override func setupSubviews() {
 		super.setupSubviews()
-		messageContainerView.insertSubview(imageView, at: 0)
-		if #available(iOS 13, *) {
-			imageView.addSubview(playImageView)
-		} else {
-			imageView.addSubview(playButtonView)
-		}
+		messageContainerView.addSubview(imageView)
+		messageContainerView.addSubview(playButtonView)
 		setupConstraints()
-	}
-	
-	open override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
-		super.apply(layoutAttributes)
-		var height = max(forwardedMessageIndicator.frame.height,
-						 supplementalMessageInfoView.frame.height)
-		height = (height == 0) ? 0 : (height + 7)
-		imageView.frame = .init(x: 0,
-								y: height,
-								width: messageContainerView.frame.width,
-								height: messageContainerView.frame.height - height)
 	}
 	
 	open override func prepareForReuse() {
@@ -101,20 +71,10 @@ open class MediaMessageCell: MessageContentCell {
 		switch message.kind {
 			case .photo(let mediaItem):
 				imageView.image = mediaItem.image ?? mediaItem.placeholderImage
-				if #available(iOS 13.0, *) {
-					playImageView.isHidden = true
-				} else {
-					playButtonView.isHidden = true
-			}
-			
+				playButtonView.isHidden = true
 			case .video(let mediaItem):
 				imageView.image = mediaItem.image ?? mediaItem.placeholderImage
-				if #available(iOS 13.0, *) {
-					playImageView.isHidden = false
-				} else {
-					playButtonView.isHidden = false
-			}
-			
+				playButtonView.isHidden = false
 			default:
 				break
 		}

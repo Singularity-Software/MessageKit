@@ -33,10 +33,10 @@ open class TypingIndicator: UIView {
     public var bounceOffset: CGFloat = 2.5
     
     /// A convenience accessor for the `backgroundColor` of each dot
-    open var dotColor: UIColor = UIColor.darkTextColor {
-        didSet {
-            dots.forEach { $0.backgroundColor = dotColor }
-        }
+	open var dotColor: UIColor = UIColor.typingIndicatorDot {
+		didSet {
+			dots.forEach { $0.backgroundColor = dotColor }
+		}
     }
     
     /// A flag that determines if the bounce animation is added in `startAnimating()`

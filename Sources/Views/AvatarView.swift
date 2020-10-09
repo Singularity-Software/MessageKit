@@ -96,7 +96,7 @@ open class AvatarView: UIImageView {
         if width == 0 || height == 0 {return UIImage()}
         var font = placeholderFont
 
-        _ = UIGraphicsBeginImageContextWithOptions(CGSize(width: width, height: height), false, UIScreen.main.scale)
+		UIGraphicsBeginImageContextWithOptions(CGSize(width: width, height: height), false, UIScreen.main.scale)
         defer { UIGraphicsEndImageContext() }
         let context = UIGraphicsGetCurrentContext()!
 
@@ -161,7 +161,7 @@ open class AvatarView: UIImageView {
     // MARK: - Internal methods
 
     internal func prepareView() {
-        backgroundColor = .grayColor
+        backgroundColor = .avatarViewBackground
         contentMode = .scaleAspectFill
         layer.masksToBounds = true
         clipsToBounds = true

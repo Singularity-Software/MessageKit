@@ -19,6 +19,7 @@ Pod::Spec.new do |s|
 
    s.ios.deployment_target = '9.0'
    s.ios.resource_bundle = { 'MessageKitAssets' => 'Assets/MessageKitAssets.bundle/Images' }
+	 s.ios.resources = ['Sources/Assets.xcassets']
 
    s.requires_arc = true
 
