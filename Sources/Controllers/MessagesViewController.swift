@@ -140,6 +140,11 @@ UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
         }
     }
 
+    open override func viewSafeAreaInsetsDidChange() {
+		super.viewSafeAreaInsetsDidChange()
+        messageCollectionViewBottomInset = requiredInitialScrollViewBottomInset()
+    }
+
     // MARK: - Initializers
 
     deinit {
@@ -154,9 +159,6 @@ UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
 		extendedLayoutIncludesOpaqueBars = true
 		view.backgroundColor = .collectionViewBackground
 		messagesCollectionView.contentInsetAdjustmentBehavior = .never
-		if #available(iOS 13.0, *) {
-			messagesCollectionView.automaticallyAdjustsScrollIndicatorInsets = false
-		}
 		messagesCollectionView.keyboardDismissMode = .interactive
 		messagesCollectionView.alwaysBounceVertical = true
 		messagesCollectionView.backgroundColor = .collectionViewBackground
